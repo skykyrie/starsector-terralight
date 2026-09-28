@@ -1,0 +1,1 @@
+package javax.xml.bind; public class DatatypeConverter { public static String printBase64Binary(byte[] b){return null;} public static byte[] parseBase64Binary(String s){return null;} public static String printHexBinary(byte[] b){return null;} }

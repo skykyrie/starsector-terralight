@@ -1,0 +1,3 @@
+package org.lwjgl.util.vector; public class Vector3f { public float x,y,z; public Vector3f(){} public Vector3f(float a,float b,float c){x=a;y=b;z=c;}
+ public float getX(){return x;} public float getY(){return y;} public float getZ(){return z;} public Vector3f set(float a,float b,float c){return this;} public float length(){return 0;} public Vector3f scale(float s){return this;}
+ public static Vector3f add(Vector3f a,Vector3f b,Vector3f d){return d;} public static Vector3f sub(Vector3f a,Vector3f b,Vector3f d){return d;} }

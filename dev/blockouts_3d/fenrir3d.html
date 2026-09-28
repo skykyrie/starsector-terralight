@@ -1,0 +1,248 @@
+<title>Fenrir 3D Block-out</title>
+<style>
+:root{--bg:#0f1012;--panel:#16181b;--line:#2c2f34;--ink:#e6e9ee;--mute:#99a1ad;--vio:#ff7a2a;--amber:#ffb24a;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+header{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;border-bottom:1px solid var(--line)}
+h1{font:600 18px "Chakra Petch","IBM Plex Sans",sans-serif;letter-spacing:.04em;margin:0}
+header p{margin:0;color:var(--mute);font-size:13px}
+main{flex:1;display:flex;min-height:0}
+#stage{flex:1;position:relative;min-width:0;min-height:320px}
+#stage canvas{display:block;width:100%;height:100%}
+.tag{position:absolute;transform:translate(-50%,-50%);font:600 11px "IBM Plex Mono",monospace;background:rgba(15,13,20,.85);border:1px solid var(--amber);color:var(--amber);border-radius:10px;padding:1px 6px;pointer-events:none;white-space:nowrap}
+aside{width:300px;background:var(--panel);border-left:1px solid var(--line);padding:14px 16px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.grp{display:flex;flex-direction:column;gap:6px}
+.lbl{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button,.btn{font:inherit;font-size:13px;background:#1e2024;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--vio);color:#2a1000;border-color:var(--vio)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+label.row{display:flex;gap:8px;align-items:center;cursor:pointer}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+ol li span{color:var(--mute);font-size:12px;display:block}
+.note{color:var(--mute);font-size:12px}
+@media (max-width:760px){main{flex-direction:column}aside{width:auto;border-left:0;border-top:1px solid var(--line)}#stage{height:62vh;flex:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>FENRIR · 3D block-out</h1><p>Terra Light destroyer, the fastest ship in the mod (fragile, heavy forward punch). Drag to orbit, scroll to zoom, right-drag to pan. Numbers match the parts list.</p></header>
+<main>
+<div id="stage"></div>
+<aside>
+  <div class="grp"><div class="lbl">Show</div>
+    <div class="seg" id="view">
+      <button aria-pressed="true" data-v="all">Whole ship</button>
+      <button aria-pressed="false" data-v="hull">Hull only</button>
+    </div></div>
+  <div class="grp"><div class="lbl">Camera</div>
+    <div class="seg"><button class="btn" id="c-top">Top (sprite view)</button><button class="btn" id="c-side">Side</button><button class="btn" id="c-34">3/4</button><button class="btn" id="c-low">Low front</button><button class="btn" id="c-rear">Rear</button></div></div>
+  <div class="grp">
+    <label class="row"><input type="checkbox" id="tags" checked> Part numbers</label>
+    <label class="row"><input type="checkbox" id="sweep" checked> Sweep guns through their arcs</label>
+    <label class="row"><input type="checkbox" id="strafe"> Strafe left/right (boosters vector)</label>
+    <label class="row"><input type="checkbox" id="spin"> Turntable</label>
+  </div>
+  <div class="grp"><div class="lbl">Parts</div>
+    <ol>
+      <li>Core body<span>TALL bulb like the EL art (as tall as it is wide) with an equator belt and a flat rear bulkhead the drive mounts on (the EL pink core), gunmetal with signal-orange racing stripes</span></li>
+      <li>Front guns ×3<span>Tip gun = HARDPOINT (gimbal ball in the nose cowl, 45° arc). Side guns = short Tiamat/Hastur built-ins (bolted socket plate + short collar on the flank), the gun base wrapped in a rounded armoured pod casing open at the front with orange edge lips; 60° arc straight ahead (±30°), covering everything the hardpoint can hit. Arc limits checked clear of the hull, nose and casing</span></li>
+      <li>Core turret<span>No pod: the turret sits straight on the core's armoured barbette on the crown (heat slits round it), full 360° arc</span></li>
+      <li>Visors<span>Cyan glass bands on the hull with orange frames: one on the front (between the 3 front guns and the top gun) and one on each side. No tower</span></li>
+      <li>Ribbed drive collar<span>Orange ribbed collar on the drive neck (EL orange ribs)</span></li>
+      <li>Main drive<span>One big bell (fastest ship in the mod)</span></li>
+      <li>Side boosters ×2<span>Clean round nacelles on swept pylons, on a fixed pylon ending in a swivel hub on each nacelle's inner flank; the nacelle vectors ±14° when the ship strafes and stays clear of the hull and main drive (tick "Strafe")</span></li>
+      <li>Small ballistic PD ×2 (proposal)<span>Sunk into the rear crown behind the top gun, spread 21 px either side of the centreline, orange lip outboard, ~200° arc covering the rear quarters</span></li>
+    </ol></div>
+  <p class="note">Top-down proportions follow the 190 × 236 px sprite (1 unit = 1 px). Heights are my guesses from the Earth Light art.</p>
+</aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage');
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));stage.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0x0f1012);
+const cam=new THREE.PerspectiveCamera(38,1,1,4000);
+const ctl=new THREE.OrbitControls(cam,R.domElement);ctl.enableDamping=true;
+S.add(new THREE.HemisphereLight(0xf2f4f8,0x202226,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(-160,320,-240);S.add(sun);
+const rim=new THREE.DirectionalLight(0xffb070,0.3);rim.position.set(200,80,300);S.add(rim);
+const grid=new THREE.GridHelper(600,40,0x2c2f34,0x191b1e);grid.position.y=-50;S.add(grid);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,metalness:.5,roughness:.5},o));
+const ARM=M(0x5a5f69),ARM_L=M(0x8a909b),ARM_D=M(0x3c4047),DARK=M(0x18191c,{roughness:.8}),
+      ORG=M(0xff7a2a,{emissive:0x3a1200,metalness:.4,roughness:.4}),CYN=M(0x5ad0ff,{emissive:0x0e4a66,metalness:.2,roughness:.15}),
+      GLOW=M(0xfff2dc,{emissive:0xffc890}),GUN=M(0x6c7280,{metalness:.7,roughness:.35});
+const CX=95,W=(px,py,y=0)=>new THREE.Vector3(px-CX,y,py-118);
+const tags=[];function tag(n,obj,off){const d=document.createElement('div');d.className='tag';d.textContent=n;stage.appendChild(d);tags.push({d,obj,off:off||new THREE.Vector3()});}
+const hull=new THREE.Group(),wpn=new THREE.Group();S.add(hull);S.add(wpn);
+const add=(m,p,g=hull)=>{if(p)m.position.copy(p);g.add(m);return m;};
+const box=(w,h,d,mat,p,g)=>add(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat),p,g);
+
+// ---------- 1 CORE BODY: TALL bulb like the EL art (62 up, 44 down, 56 half-width), flat rear bulkhead for the drive
+const BX=56,BY=62,BZ=70,BCZ=120,FF=0.8,ZC=0.94;               // py 50..186
+const ff=z=>FF+(1-FF)*Math.min(1,(z+1)*0.9);
+const bg=new THREE.SphereGeometry(1,72,48);const pa=bg.attributes.position;
+for(let i=0;i<pa.count;i++){let z=pa.getZ(i);if(z>ZC){z=ZC;pa.setZ(i,z);}pa.setX(i,pa.getX(i)*ff(z));if(pa.getY(i)<0)pa.setY(i,pa.getY(i)*0.7);}
+bg.computeVertexNormals();
+const body=new THREE.Mesh(bg,ARM);body.scale.set(BX,BY,BZ);body.position.copy(W(95,BCZ,0));hull.add(body);
+const zz_=py=>Math.min(ZC,(py-BCZ)/BZ);
+const hwB=py=>{const z=zz_(py);return BX*Math.sqrt(Math.max(0,1-z*z))*ff(z);};
+const hB=py=>{const z=zz_(py);return BY*Math.sqrt(Math.max(0,1-z*z));};
+const onHull=(py,a)=>{const z=zz_(py),k=Math.sqrt(Math.max(0,1-z*z));return W(95+BX*k*ff(z)*Math.sin(a),py,(Math.cos(a)>0?BY:BY*0.7)*k*Math.cos(a));};
+const bulk=new THREE.Mesh(new THREE.CircleGeometry(1,48),ARM_D);bulk.scale.set(hwB(186)-0.5,hB(186)-0.5,1);bulk.position.copy(W(95,186.2,0));bulk.rotation.y=Math.PI;hull.add(bulk);
+for(const py of [74,98,146,170]){const r=new THREE.Mesh(new THREE.TorusGeometry(1,0.012,6,64),DARK);r.scale.set(hwB(py)+0.4,hB(py)+0.4,1);r.position.copy(W(95,py,0));hull.add(r);}
+[-1,1].forEach(g=>{[0.55].forEach(a=>{const pts=[];for(let i=0;i<=13;i++){const py=82+i*8;pts.push(onHull(py,g*a).add(new THREE.Vector3(g*0.3*Math.sin(a),0.3*Math.cos(a),0)));}
+    hull.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),48,a<1?1.3:0.5,6),a<1?ORG:DARK));});
+  const bl=[];for(let i=0;i<=18;i++){const py=56+i*7;bl.push(onHull(py,g*Math.PI/2).add(new THREE.Vector3(g*0.8,0,0)));}
+  hull.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(bl),48,2.8,8),ARM_D));});
+// ---------- 2 GUN PODS: tip pod on a forward neck; two HAND pods on side necks, rolled 90 deg outward (left CCW, right CW seen from astern)
+// so their turrets sit on the outer face like hands holding guns; the hands swivel on their wrists (necks) to aim, 60 deg arc
+const guns=[],pods=[],hands=[];
+function podNeck(parent,p0,p1,r){const d=p1.clone().sub(p0),L=d.length(),mid=p0.clone().add(p1).multiplyScalar(0.5);
+  const g=new THREE.Group();g.position.copy(mid);g.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());parent.add(g);
+  const c=new THREE.Mesh(new THREE.CylinderGeometry(r,r*1.12,L,28),ARM_D);g.add(c);
+  const f0=new THREE.Mesh(new THREE.TorusGeometry(r*1.35,2.2,8,28),ARM_L);f0.rotation.x=Math.PI/2;f0.position.y=-L/2+1.5;g.add(f0);
+  const f1=new THREE.Mesh(new THREE.TorusGeometry(r*1.05,1.4,8,28),ORG);f1.rotation.x=Math.PI/2;f1.position.y=L/2-1.5;g.add(f1);
+  for(let k=0;k<10;k++){const a=k/10*Math.PI*2;const b=new THREE.Mesh(new THREE.BoxGeometry(1.6,1.6,1.6),DARK);b.position.set(Math.cos(a)*r*1.35,-L/2+3,Math.sin(a)*r*1.35);g.add(b);}
+  return g;}
+function turret(parent){const tur=new THREE.Group();parent.add(tur);
+  const d=new THREE.Mesh(new THREE.SphereGeometry(11,20,12,0,Math.PI*2,0,Math.PI/2),GUN);d.scale.y=0.6;tur.add(d);
+  const man=new THREE.Mesh(new THREE.BoxGeometry(11,6,11),GUN);man.position.set(0,4,-6);tur.add(man);
+  for(let b=0;b<6;b++){const a=b/6*Math.PI*2;const br=new THREE.Mesh(new THREE.CylinderGeometry(1,1,20,8),ARM_D);br.rotation.x=Math.PI/2;br.position.set(Math.cos(a)*2.6,4+Math.sin(a)*2.6,-20);tur.add(br);}
+  const cl=new THREE.Mesh(new THREE.TorusGeometry(3.8,0.9,6,16),ORG);cl.position.set(0,4,-26);tur.add(cl);return tur;}
+function pod(parent,r){const P=new THREE.Group();parent.add(P);                       // pod in its own frame: turret seat on local +y
+  const p=new THREE.Mesh(new THREE.SphereGeometry(r,40,24),ARM_L);p.scale.set(1,0.8,1);P.add(p);
+  const belt=new THREE.Mesh(new THREE.TorusGeometry(r+0.3,1.5,8,40),ARM_D);belt.rotation.x=Math.PI/2;P.add(belt);
+  for(let k=0;k<6;k++){const a=k/6*Math.PI*2;const pl=new THREE.Mesh(new THREE.BoxGeometry(1,3.4,7),ARM_D);pl.position.set(Math.cos(a)*(r-0.8),2,Math.sin(a)*(r-0.8));pl.rotation.y=-a;P.add(pl);}
+  const band=new THREE.Mesh(new THREE.TorusGeometry(r-4.5,0.9,6,40),ORG);band.rotation.x=Math.PI/2;band.position.y=r*0.8*0.62;P.add(band);
+  const seat=new THREE.Group();seat.position.y=r*0.8-1.5;P.add(seat);
+  seat.add(new THREE.Mesh(new THREE.CylinderGeometry(14,15,2,32),ARM_D));const tr=turret(seat);tr.position.y=1;
+  pods.push(p);return {P,tr};}
+// front gun: HARDPOINT built into the nose - armoured cowl, fixed forward (barrels poke out of the muzzle port)
+{const H=new THREE.Group();H.position.copy(W(95,50,6));hull.add(H);
+ const cowl=new THREE.Mesh(new THREE.CylinderGeometry(13,19,28,32),ARM_L);cowl.rotation.x=-Math.PI/2;cowl.position.z=-10;cowl.scale.set(1.15,1,0.9);H.add(cowl);   // tapered nose cowl
+ const lip=new THREE.Mesh(new THREE.TorusGeometry(13.5,1.6,8,32),ARM_D);lip.position.z=-24;lip.scale.set(1.15,0.9,1);H.add(lip);
+ const port=new THREE.Mesh(new THREE.CircleGeometry(12,28),DARK);port.position.z=-24.4;port.rotation.y=Math.PI;port.scale.set(1.15,0.9,1);H.add(port);
+ const band=new THREE.Mesh(new THREE.TorusGeometry(17,1,6,32),ORG);band.position.z=-2;band.scale.set(1.15,0.9,1);H.add(band);
+ for(let k=0;k<3;k++){const r=new THREE.Mesh(new THREE.TorusGeometry(15-k*1.3,0.5,6,32),DARK);r.position.z=-8-k*5;r.scale.set(1.15,0.9,1);H.add(r);}   // cowl seams
+ const ball=new THREE.Mesh(new THREE.SphereGeometry(8.5,24,16),GUN);ball.position.z=-22;H.add(ball);            // gimbal ball seated in the muzzle port
+ const gun=new THREE.Group();gun.position.z=-22;H.add(gun);                                                       // pivot = ball centre
+ const sleeve=new THREE.Mesh(new THREE.CylinderGeometry(5.6,6.4,8,20),GUN);sleeve.rotation.x=Math.PI/2;sleeve.position.z=-9;gun.add(sleeve);
+ for(let b=0;b<6;b++){const a=b/6*Math.PI*2;const br=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,18,8),ARM_D);br.rotation.x=Math.PI/2;br.position.set(Math.cos(a)*3.4,Math.sin(a)*3.4,-18);gun.add(br);}
+ const cl=new THREE.Mesh(new THREE.TorusGeometry(4.8,1,6,16),ORG);cl.position.z=-26;gun.add(cl);
+ gun.userData={ang:0,arc:Math.PI/4};guns.push(gun);pods.push(cowl);}
+// side guns: Tiamat/Hastur built-in mechanism, SHORT: bolted socket plate on the flank + short collar, the round gun hub sits right on the collar end.
+// arc 60 deg straight ahead (+-30) - covers everything the nose hardpoint (+-22.5) can hit, and converges on its targets
+[-1,1].forEach(g=>{const py=84,y=6,hx=hwB(py);
+  const root=new THREE.Mesh(new THREE.CylinderGeometry(11,13,3,28),ARM_D);root.rotation.z=Math.PI/2;root.position.copy(W(95+g*(hx-0.5),py,y));hull.add(root);
+  for(let k=0;k<8;k++){const a=k/8*Math.PI*2;const b=new THREE.Mesh(new THREE.BoxGeometry(1.4,1.4,1.4),DARK);b.position.copy(W(95+g*(hx+1.2),py+Math.cos(a)*10.8,y+Math.sin(a)*10.8));hull.add(b);}
+  const col=new THREE.Mesh(new THREE.CylinderGeometry(6,7,8,28),ARM_L);col.rotation.z=Math.PI/2;col.position.copy(W(95+g*(hx+4),py,y));hull.add(col);
+  const cr=new THREE.Mesh(new THREE.TorusGeometry(7.2,1,8,28),ORG);cr.rotation.y=Math.PI/2;cr.position.copy(W(95+g*(hx+2),py,y));hull.add(cr);
+  const bar=new THREE.Group();bar.position.copy(W(95+g*(hx+21),py,y));hull.add(bar);hands.push(bar);
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(6.5,6.5,12,24),ARM);bar.add(hub);
+  const hubR=new THREE.Mesh(new THREE.TorusGeometry(6.6,0.7,6,24),ORG);hubR.rotation.x=Math.PI/2;hubR.position.y=6;bar.add(hubR);
+  const hubC=new THREE.Mesh(new THREE.CylinderGeometry(5,5,1.4,20),ARM_L);hubC.position.y=6.4;bar.add(hubC);
+  const sl=new THREE.Mesh(new THREE.CylinderGeometry(5,5.6,8,18),GUN);sl.rotation.x=Math.PI/2;sl.position.z=-10;bar.add(sl);
+  for(let b=0;b<6;b++){const a=b/6*Math.PI*2;const br=new THREE.Mesh(new THREE.CylinderGeometry(1.1,1.1,20,8),ARM_D);br.rotation.x=Math.PI/2;br.position.set(Math.cos(a)*3.2,Math.sin(a)*3.2,-22);bar.add(br);}
+  const cl=new THREE.Mesh(new THREE.TorusGeometry(4.4,0.9,6,16),ORG);cl.position.z=-31;bar.add(cl);
+  // armoured pod casing round the gun base: rounded shell fixed to the collar, open at the front (+-62 deg) so the barrels sweep their 60 deg arc freely
+  const OPEN=1.26,CR=[13,13,15],cg=new THREE.SphereGeometry(1,40,24,Math.PI*1.5+OPEN,Math.PI*2-2*OPEN,0,Math.PI);
+  const cas=new THREE.Mesh(cg,ARM_L.clone());cas.name='casing';cas.material.side=THREE.DoubleSide;cas.scale.set(...CR);cas.userData={CR,OPEN};cas.position.copy(bar.position).add(new THREE.Vector3(0,0,2));hull.add(cas);
+  [-1,1].forEach(e=>{const a=Math.PI*1.5+e*OPEN;const pts=[];for(let k=0;k<=16;k++){const th=0.08+(Math.PI-0.16)*k/16;       // orange lips following the opening edge
+      pts.push(cas.position.clone().add(new THREE.Vector3(-(CR[0]+0.2)*Math.sin(th)*Math.cos(a),(CR[1]+0.2)*Math.cos(th),(CR[2]+0.2)*Math.sin(th)*Math.sin(a))));}
+    {const lipM=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,1.1,6),ORG);lipM.name='caseLip';hull.add(lipM);}});
+  bar.userData={ang:0,arc:60*Math.PI/180};guns.push(bar);pods.push(col);});
+// ---------- 8 SMALL BALLISTIC PD x2: sunk into the rear crown behind the top gun, spread either side of the centreline
+const pd=[];
+[-1,1].forEach(g=>{const py=162,dx=g*30;const h=hB(py),w=hwB(py);const yy=h*Math.sqrt(Math.max(0,1-(dx/w)**2));
+  const n=new THREE.Vector3(dx/(w*w),yy/(h*h),(py-BCZ)/(BZ*BZ)*0.6).normalize();
+  const m=new THREE.Group();m.position.copy(W(95+dx,py,yy-1));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),n);wpn.add(m);
+  const well=new THREE.Mesh(new THREE.CylinderGeometry(7,7,3,22),DARK);m.add(well);
+  const lipG=new THREE.Group();lipG.rotation.y=g>0?Math.PI/2:-Math.PI/2;m.add(lipG);
+  const lp=new THREE.Mesh(new THREE.TorusGeometry(8,1.2,6,18,Math.PI),ORG);lp.rotation.x=Math.PI/2;lp.position.y=1.6;lipG.add(lp);
+  const tur=new THREE.Group();tur.position.y=3.2;m.add(tur);
+  const ped=new THREE.Mesh(new THREE.CylinderGeometry(4,5,3.4,16),ARM_D);ped.position.y=1.5;m.add(ped);
+  tur.add(new THREE.Mesh(new THREE.SphereGeometry(4.4,14,8,0,Math.PI*2,0,Math.PI/2),ARM_L));
+  [-1.4,1.4].forEach(o=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,9,8),ARM_D);b.rotation.x=Math.PI/2;b.position.set(o,2,-6);tur.add(b);});
+  tur.userData.base=(g<0?1:-1)*Math.PI*0.6;pd.push(tur);});
+// ---------- 3 CORE TURRET: no pod - the turret sits straight on the core's armoured barbette on the crown (300 deg)
+const barb=new THREE.Group();barb.position.copy(W(95,118,BY-5));hull.add(barb);
+barb.add(new THREE.Mesh(new THREE.CylinderGeometry(20,27,12,40),ARM_D));
+const brim=new THREE.Mesh(new THREE.TorusGeometry(20,1.8,8,40),ARM_L);brim.rotation.x=Math.PI/2;brim.position.y=6;barb.add(brim);
+const bor=new THREE.Mesh(new THREE.TorusGeometry(24,0.9,6,40),ORG);bor.rotation.x=Math.PI/2;bor.position.y=2;barb.add(bor);
+for(let k=0;k<8;k++){const a=k/8*Math.PI*2+Math.PI/8;const v=new THREE.Mesh(new THREE.BoxGeometry(1.2,5,6),ORG);v.position.set(Math.cos(a)*25.6,-1,Math.sin(a)*25.6);v.rotation.y=-a;barb.add(v);}   // core heat slits
+const cseat=new THREE.Group();cseat.position.y=6.5;barb.add(cseat);cseat.add(new THREE.Mesh(new THREE.CylinderGeometry(15,16,2,32),DARK));
+const ctur=turret(cseat);ctur.position.y=1;ctur.userData={ang:0,arc:2*Math.PI,full:true};guns.push(ctur);
+const coreG=barb;
+// ---------- 4 VISORS on the hull: front (between the 3 front guns and the top gun) + one on each side
+const visors=[];
+function visor(ph,len,th,tl,sx){const gg=new THREE.SphereGeometry(1,40,6,ph-len/2,len,th-tl/2,tl);const v=new THREE.Mesh(gg,CYN);v.scale.set(sx+1.2,BY+1.2,BZ+1.2);v.position.copy(W(95,BCZ,0));hull.add(v);visors.push(v);
+  [-1,1].forEach(e=>{const fg=new THREE.SphereGeometry(1,40,2,ph-len/2-0.03,len+0.06,th+e*(tl/2+0.01)-0.01,0.02);const f=new THREE.Mesh(fg,ORG);f.scale.set(sx+1.8,BY+1.8,BZ+1.8);f.position.copy(W(95,BCZ,0));hull.add(f);});
+  const n=Math.max(2,Math.round(len/0.16));for(let k=1;k<n;k++){const a=ph-len/2+len*k/n;const x=-(sx+1.6)*Math.cos(a)*Math.sin(th),z=(BZ+1.6)*Math.sin(a)*Math.sin(th),y=(BY+1.6)*Math.cos(th);
+    const m=new THREE.Mesh(new THREE.BoxGeometry(1,6,1.2),DARK);m.position.copy(W(95,BCZ,0)).add(new THREE.Vector3(x,y,z));m.lookAt(W(95,BCZ,0).add(new THREE.Vector3(x*2,y*0.6,z*2)));hull.add(m);}}
+visor(Math.PI*1.5,0.9,1.0,0.13,BX*0.84);                 // front
+visor(0,0.7,1.1,0.12,BX*0.98);visor(Math.PI,0.7,1.1,0.12,BX*0.98);   // left, right
+// ---------- 5 RIBBED DRIVE COLLAR + 6 MAIN DRIVE, mounted on the rear bulkhead (py 186)
+const eng=new THREE.Group();eng.position.copy(W(95,186,0));hull.add(eng);
+const neck=new THREE.Mesh(new THREE.CylinderGeometry(17,19,16,32),ARM_D);neck.rotation.x=Math.PI/2;neck.position.z=8;eng.add(neck);
+[3,8,13].forEach((z,i)=>{const rb=new THREE.Mesh(new THREE.TorusGeometry(19.5-i*0.4,2.2,8,36),ORG);rb.position.z=z;eng.add(rb);});
+const bell=new THREE.Mesh(new THREE.CylinderGeometry(19,25,20,36,1,true),ARM.clone());bell.material.side=THREE.DoubleSide;bell.rotation.x=Math.PI/2;bell.position.z=26;eng.add(bell);
+const lip=new THREE.Mesh(new THREE.TorusGeometry(25,1.2,6,36),ARM_L);lip.position.z=36;eng.add(lip);
+const gl=new THREE.Mesh(new THREE.CircleGeometry(18,32),GLOW);gl.position.z=19;eng.add(gl);
+// ---------- 7 SIDE BOOSTERS: clean lathe nacelles on swept airfoil pylons that VECTOR (swivel) when the ship strafes left/right; 8 PD proposal
+const sides=[],boosters=[];
+function nozzle(parent,r,len,glowz){const n=new THREE.Group();parent.add(n);
+  const can=new THREE.Mesh(new THREE.CylinderGeometry(r,r+2,len,24,1,true),ARM_D.clone());can.material.side=THREE.DoubleSide;can.rotation.x=Math.PI/2;can.position.z=len/2;n.add(can);
+  const lipN=new THREE.Mesh(new THREE.TorusGeometry(r+2.1,0.9,6,24),ORG);lipN.position.z=len;n.add(lipN);
+  const gl=new THREE.Mesh(new THREE.CircleGeometry(r-0.6,20),GLOW);gl.position.z=glowz;n.add(gl);return n;}
+const NAC=[[0,0],[5,8],[12,12.5],[22,14],[44,14],[52,12.5],[56,11]];
+[-1,1].forEach(g=>{const px=95+g*76,y0=156;const piv=W(95+g*57,184,0);
+  const B=new THREE.Group();B.position.copy(piv);hull.add(B);boosters.push(B);
+  const at=(v)=>v.clone().sub(piv);
+  // fixed pylon from the hull to the swivel hub (does not move)
+  const hx=hwB(184);const ps=new THREE.Shape();ps.moveTo(0,8);ps.lineTo(g*(57-hx-6),5);ps.lineTo(g*(57-hx-6),-7);ps.lineTo(0,-12);ps.closePath();
+  const pyl=new THREE.Mesh(new THREE.ExtrudeGeometry(ps,{depth:5,bevelEnabled:true,bevelThickness:2,bevelSize:2,bevelSegments:4}),ARM_D);pyl.rotation.x=-Math.PI/2;pyl.position.copy(W(95+g*(hx-2),184,-2.5));hull.add(pyl);
+  const pt=box(57-hx-12,0.8,6,ORG,W(95+g*((hx+49)/2),184,3.2));
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(4.5,4.5,18,24),ARM_L);hub.position.copy(piv);hull.add(hub);                       // swivel hub (vertical axis)
+  [9.2,-9.2].forEach(yy=>{const hr=new THREE.Mesh(new THREE.TorusGeometry(4.6,0.7,6,24),ORG);hr.rotation.x=Math.PI/2;hr.position.copy(piv).add(new THREE.Vector3(0,yy,0));hull.add(hr);});
+  const prof=NAC.map(([z,r])=>new THREE.Vector2(r,z));const lg=new THREE.LatheGeometry(prof,40);lg.rotateX(Math.PI/2);
+  const nac=new THREE.Mesh(lg,ARM);nac.position.copy(at(W(px,y0,0)));B.add(nac);sides.push(nac);
+  [18,30,42].forEach(z=>{const rb=new THREE.Mesh(new THREE.TorusGeometry(14.2,1,6,32),ORG);rb.position.copy(at(W(px,y0+z,0)));B.add(rb);});
+  const cap=new THREE.Mesh(new THREE.CircleGeometry(11,24),ARM_D);cap.position.copy(at(W(px,y0+56,0)));B.add(cap);
+  const an=new THREE.Group();an.position.copy(at(W(px,y0+56,0)));B.add(an);nozzle(an,8.5,9,3);
+  const yoke=new THREE.Mesh(new THREE.BoxGeometry(8,10,16),ARM_D);yoke.position.set(g*9.5,0,0);const knuckle=new THREE.Mesh(new THREE.CylinderGeometry(4,4,10,20),ARM);knuckle.position.set(0,0,0);B.add(knuckle);B.add(yoke);                    // yoke from hub into the nacelle flank
+});
+// nav lights
+[-1,1].forEach(g=>add(new THREE.Mesh(new THREE.SphereGeometry(1.8,10,8),M(g<0?0xff4a3a:0x5aff78,{emissive:g<0?0xff2010:0x20ff40})),W(95+g*(hwB(120)+3),120,0)));
+
+tag('1',body,new THREE.Vector3(-30,-10,30));tag('2',pods[1],new THREE.Vector3(-20,26,0));tag('3',coreG,new THREE.Vector3(30,8,0));tag('4',visors[0],new THREE.Vector3(0,40,-60));
+tag('5',eng,new THREE.Vector3(0,30,6));tag('6',eng,new THREE.Vector3(0,-20,36));tag('7',sides[0],new THREE.Vector3(-8,24,20));tag('8',pd[1],new THREE.Vector3(8,8,0));
+
+// ---------- UI
+let view='all';
+document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{view=b.dataset.v;wpn.visible=view==='all';
+  document.querySelectorAll('#view button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===view));});
+function camTo(p){cam.position.copy(p);ctl.target.set(0,0,0);ctl.update();}
+document.getElementById('c-top').onclick=()=>camTo(new THREE.Vector3(0,430,0.1));
+document.getElementById('c-side').onclick=()=>camTo(new THREE.Vector3(380,30,0));
+document.getElementById('c-34').onclick=()=>camTo(new THREE.Vector3(-240,190,-240));
+document.getElementById('c-low').onclick=()=>camTo(new THREE.Vector3(-130,-40,-310));
+document.getElementById('c-rear').onclick=()=>camTo(new THREE.Vector3(160,130,320));
+camTo(new THREE.Vector3(-240,190,-240));
+const tg=document.getElementById('tags'),sw=document.getElementById('sweep'),sp=document.getElementById('spin'),sf=document.getElementById('strafe');
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();}
+addEventListener('resize',size);size();
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)sw.checked=false;
+const v=new THREE.Vector3();const t0=performance.now();
+function loop(now){const t=(now-t0)/1000;
+  guns.forEach((g,i)=>{g.rotation.y=g.userData.full?(sw.checked?t*0.8:0):g.userData.ang+(sw.checked?Math.sin(t*0.9+i*1.1)*g.userData.arc/2:0);});
+  const st=sf.checked?Math.sin(t*1.2):0;boosters.forEach((b,i)=>{b.rotation.y=st*0.25;});                              // strafe: both boosters vector together
+  pd.forEach((p,i)=>{p.rotation.y=p.userData.base+(sw.checked?Math.sin(t*1.2+i)*Math.PI*0.5:0);});
+  if(sp.checked)S.rotation.y+=.004;
+  ctl.update();R.render(S,cam);
+  tags.forEach(({d,obj,off})=>{let p=obj,vis_=tg.checked;while(p){if(!p.visible)vis_=false;p=p.parent;}d.hidden=!vis_;if(!vis_)return;
+    obj.getWorldPosition(v);v.add(off);v.project(cam);d.style.left=((v.x+1)/2*stage.clientWidth)+'px';d.style.top=((1-v.y)/2*stage.clientHeight)+'px';});
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>

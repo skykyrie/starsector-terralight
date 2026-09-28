@@ -1,0 +1,232 @@
+<title>Duilius 3D Block-out</title>
+<style>
+:root{--bg:#0e1014;--panel:#15181d;--line:#2a2f37;--ink:#e6e9ee;--mute:#99a1ad;--vio:#ffc62e;--amber:#ffb24a;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+header{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;border-bottom:1px solid var(--line)}
+h1{font:600 18px "Chakra Petch","IBM Plex Sans",sans-serif;letter-spacing:.04em;margin:0}
+header p{margin:0;color:var(--mute);font-size:13px}
+main{flex:1;display:flex;min-height:0}
+#stage{flex:1;position:relative;min-width:0;min-height:320px}
+#stage canvas{display:block;width:100%;height:100%}
+.tag{position:absolute;transform:translate(-50%,-50%);font:600 11px "IBM Plex Mono",monospace;background:rgba(15,13,20,.85);border:1px solid var(--amber);color:var(--amber);border-radius:10px;padding:1px 6px;pointer-events:none;white-space:nowrap}
+aside{width:300px;background:var(--panel);border-left:1px solid var(--line);padding:14px 16px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.grp{display:flex;flex-direction:column;gap:6px}
+.lbl{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button,.btn{font:inherit;font-size:13px;background:#1c2027;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--vio);color:#2a1e00;border-color:var(--vio)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+label.row{display:flex;gap:8px;align-items:center;cursor:pointer}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+ol li span{color:var(--mute);font-size:12px;display:block}
+.note{color:var(--mute);font-size:12px}
+@media (max-width:760px){main{flex-direction:column}aside{width:auto;border-left:0;border-top:1px solid var(--line)}#stage{height:62vh;flex:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>DUILIUS · 3D block-out</h1><p>Terra Light cruiser. Drag to orbit, scroll to zoom, right-drag to pan. Numbers match the parts list.</p></header>
+<main>
+<div id="stage"></div>
+<aside>
+  <div class="grp"><div class="lbl">Show</div>
+    <div class="seg" id="view">
+      <button aria-pressed="true" data-v="all">Whole ship</button>
+      <button aria-pressed="false" data-v="hull">Hull only</button>
+    </div></div>
+  <div class="grp"><div class="lbl">Camera</div>
+    <div class="seg"><button class="btn" id="c-top">Top (sprite view)</button><button class="btn" id="c-side">Side</button><button class="btn" id="c-34">3/4</button><button class="btn" id="c-low">Low front</button></div></div>
+  <div class="grp">
+    <label class="row"><input type="checkbox" id="tags" checked> Part numbers</label>
+    <label class="row"><input type="checkbox" id="sweep" checked> Sweep guns through their arcs</label>
+    <label class="row"><input type="checkbox" id="claws"> Fire the claws (ship system)</label>
+    <label class="row"><input type="checkbox" id="spin"> Turntable</label>
+  </div>
+  <div class="grp"><div class="lbl">Parts</div>
+    <ol>
+      <li>Main hull<span>Armoured capsule, gunmetal with yellow livery (EL yellow cue)</span></li>
+      <li>Claw bays ×2<span>Cobalt side galleries, 4 hatches each = 8 grapple claws; the ship system fires all 8 at the nearest ship</span></li>
+      <li>Large ballistic ×2<span>Swappable, hung under the bow and drawn below the hull; only the barrels show past the nose. 20° forward arc</span></li>
+      <li>Small ballistic PD ×6<span>Sunk into the upper hull, 3 per side, lip on the outboard edge, 240° to their side</span></li>
+      <li>Command tower<span>3 stepped tiers at the stern, pink visor glass (EL pink dome cue)</span></li>
+      <li>Drive core cover<span>Armoured petal hatch on the spine; the core sits deep below it</span></li>
+      <li>Main drive<span>Ribbed drive collar (EL ribs) + one big bell</span></li>
+      <li>Diagonal jets ×2<span>Rear quarters, just behind the claw bays</span></li>
+      <li>Bow cap<span>Armour hoops + sensor eye at the nose</span></li>
+      <li>Keel<span>Belly spine tying the gun galleries to the drive</span></li>
+    </ol></div>
+  <p class="note">Top-down proportions follow the 190 × 436 px sprite (1 unit = 1 px). Heights are my guesses from the Earth Light art.</p>
+</aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage');
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));stage.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0x0e1014);
+const cam=new THREE.PerspectiveCamera(38,1,1,5000);
+const ctl=new THREE.OrbitControls(cam,R.domElement);ctl.enableDamping=true;
+S.add(new THREE.HemisphereLight(0xeef2ff,0x20242a,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(-160,320,-240);S.add(sun);
+const rim=new THREE.DirectionalLight(0xffd88a,0.35);rim.position.set(200,80,300);S.add(rim);
+const grid=new THREE.GridHelper(800,40,0x2a2f37,0x191c21);grid.position.y=-80;S.add(grid);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,metalness:.55,roughness:.45},o));
+const ARM=M(0x8f979f),ARM_L=M(0xb6bec6),ARM_D=M(0x5c636b),DARK=M(0x1e2226,{roughness:.8}),
+      YEL=M(0xffc62e,{emissive:0x4a3200,metalness:.35}),COB=M(0x2f7ef0,{emissive:0x0a2250,metalness:.4}),COB_L=M(0x7ab8ff,{emissive:0x10305a,metalness:.4}),
+      PNK=M(0xff5aa8,{emissive:0x6a1040,metalness:.2,roughness:.15}),LIT=M(0xfff0b0,{emissive:0xffc040}),GLOW=M(0xfff4c0,{emissive:0xffd060}),
+      EYE=M(0x9fe8ff,{emissive:0x1a5a70,roughness:.2});
+const CX=95,W=(px,py,y=0)=>new THREE.Vector3(px-CX,y,py-210);
+const tags=[];function tag(n,obj,off){const d=document.createElement('div');d.className='tag';d.textContent=n;stage.appendChild(d);tags.push({d,obj,off:off||new THREE.Vector3()});}
+const hull=new THREE.Group(),wpn=new THREE.Group();S.add(hull);S.add(wpn);
+const add=(m,p,g=hull)=>{if(p)m.position.copy(p);g.add(m);return m;};
+const box=(w,h,d,mat,p,g)=>add(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat),p,g);
+
+// ---------- 1 MAIN HULL: elliptic capsule (half-width 52, half-height 40), py 48 (nose) .. 344 (stern cap)
+const HW=52,HH=40,C0=100,C1=310,NOSE=52,TAIL=34;
+const cylG=new THREE.CylinderGeometry(1,1,C1-C0,64,1,true);cylG.rotateX(Math.PI/2);
+const cyl=add(new THREE.Mesh(cylG,ARM),W(CX,(C0+C1)/2));cyl.scale.set(HW,HH,1);
+const nose=add(new THREE.Mesh(new THREE.SphereGeometry(1,64,32),ARM_L),W(CX,C0));nose.scale.set(HW,HH,NOSE);
+const tail=add(new THREE.Mesh(new THREE.SphereGeometry(1,64,32),ARM),W(CX,C1));tail.scale.set(HW,HH,TAIL);
+// half-size of the cross-section at a given py (capsule profile)
+const sec=py=>py<C0?Math.sqrt(Math.max(0,1-((C0-py)/NOSE)**2)):py>C1?Math.sqrt(Math.max(0,1-((py-C1)/TAIL)**2)):1;
+const topY=(x,py)=>{const k=sec(py);return HH*k*Math.sqrt(Math.max(0,1-(x/(HW*k))**2));};
+const nrm=(x,py)=>{const k=sec(py),y=topY(x,py);return new THREE.Vector3(x/(HW*HW*k*k),y/(HH*HH*k*k),0).normalize();};
+const ring=(py,t,mat,out=0.6)=>{const k=sec(py);const r=add(new THREE.Mesh(new THREE.TorusGeometry(1,t,6,72),mat),W(CX,py));r.scale.set(HW*k+out,HH*k+out,1);return r;};
+[128,158,188,236,266,296].forEach(py=>ring(py,0.012,DARK));      // armour seams
+ring(106,0.03,YEL,1);ring(318,0.035,YEL,1);                        // livery hoops fore + aft
+// spine: yellow twin stripe + raised armour strip, broken by the core cover
+[[102,196],[236,262]].forEach(([a,b])=>{box(12,3,b-a,ARM_L,W(CX,(a+b)/2,HH+0.5));[-1,1].forEach(g=>box(2,1.2,b-a,YEL,W(CX+g*9,(a+b)/2,HH+0.4)));});
+// upper armour tiles between spine and PD rows
+[-1,1].forEach(g=>{for(let py=112;py<300;py+=26){if(Math.abs(py-176)<14||Math.abs(py-256)<14||py>262)continue;const x=g*17;const y=topY(x,py);
+  const t=box(9,2.2,20,ARM_L,W(CX+x,py+10,y+0.6));t.rotation.z=-Math.atan2(nrm(x,py).x,nrm(x,py).y);}});
+// lit crew windows above the claw bays
+[-1,1].forEach(g=>{for(let py=116;py<=300;py+=12){if([96,176,256].some(p=>Math.abs(py-p)<10))continue;const y=25,x=g*HW*Math.sqrt(1-(y/HH)**2);box(1.6,3,6,LIT,W(CX+x,py,y));}});
+
+// ---------- 9 BOW CAP: armour hoops + sensor eye
+for(const f of [0.3,0.55,0.8]){const z=NOSE*Math.cos(Math.PI/2*f),k=Math.sin(Math.PI/2*f);const r=add(new THREE.Mesh(new THREE.TorusGeometry(1,0.03,8,64),ARM),W(CX,C0-z));r.scale.set(HW*k+0.8,HH*k+0.8,1);}
+const eye=add(new THREE.Mesh(new THREE.SphereGeometry(7,24,16),EYE),W(CX,C0-NOSE+3,4));
+const eyeRim=add(new THREE.Mesh(new THREE.TorusGeometry(8,1.4,8,24),ARM_D),W(CX,C0-NOSE+4.5,4));
+
+// ---------- 2 CLAW BAYS: cobalt side galleries py 112..322, 4 hatches each at py 136/191/246/301 (outer face x = +-62)
+const BAY0=112,BAY1=322,BX=HW+10,claws=[];
+[-1,1].forEach(g=>{
+  box(16,36,BAY1-BAY0,COB,W(CX+g*(HW+2),(BAY0+BAY1)/2,0));
+  [-1,1].forEach(v=>box(4,3,BAY1-BAY0+4,YEL,W(CX+g*(HW+8.5),(BAY0+BAY1)/2,v*18.5)));                // thin yellow edge rails on the outer lip
+  const fr=box(18,40,8,ARM_D,W(CX+g*(HW+2),BAY0-2,0));const bk=box(18,40,8,ARM_D,W(CX+g*(HW+2),BAY1+2,0));  // end caps
+  [136,191,246,301].forEach(py=>{
+    const rG=new THREE.CylinderGeometry(1,1,1,28);rG.rotateZ(Math.PI/2);
+    const rec=add(new THREE.Mesh(rG,DARK),W(CX+g*BX,py,0));rec.scale.set(1.6,13,10.5);
+    const rim=add(new THREE.Mesh(new THREE.TorusGeometry(1,0.1,6,28),COB_L),W(CX+g*(BX+0.4),py,0));rim.rotation.y=Math.PI/2;rim.scale.set(10.5,13,1);
+    const dT=box(1.4,12.6,19,COB_L,W(CX+g*(BX+1),py,6.4)),dB=box(1.4,12.6,19,COB_L,W(CX+g*(BX+1),py,-6.4));
+    [dT,dB].forEach(d=>{for(let k=-1;k<=1;k++){const r=box(1.8,0.8,2,DARK,new THREE.Vector3(0,0,k*6),d);r.position.y=0;}});
+    // grapple claw: hub + 3 prongs + cable
+    const cG=new THREE.Group();cG.position.copy(W(CX+g*(BX-14),py,0));wpn.add(cG);
+    const hub=new THREE.Mesh(new THREE.SphereGeometry(4.2,14,10),ARM_D);cG.add(hub);
+    for(let k=0;k<3;k++){const a=k/3*Math.PI*2;const pr=new THREE.Group();pr.rotation.x=a;cG.add(pr);
+      const p1=new THREE.Mesh(new THREE.BoxGeometry(8,1.6,1.6),YEL);p1.position.set(g*4,3.4,0);p1.rotation.z=g*0.5;pr.add(p1);
+      const p2=new THREE.Mesh(new THREE.BoxGeometry(6,1.4,1.4),YEL);p2.position.set(g*9,4.2,0);p2.rotation.z=-g*0.6;pr.add(p2);}
+    const cab=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,1,6),DARK);cab.rotation.z=Math.PI/2;wpn.add(cab);
+    claws.push({g,py,cG,cab,dT,dB});});});
+
+// ---------- 3 LARGE BALLISTIC x2 under the bow (px 65/125, py 66), under-hull slots: barrels poke past the nose
+const guns=[];
+[-1,1].forEach(g=>{const x=g*30,py=66,k=sec(py),yb=-HH*k*Math.sqrt(Math.max(0,1-(x/(HW*k))**2));
+  const m=new THREE.Group();m.position.copy(W(CX+x,py,yb-4));wpn.add(m);
+  const well=new THREE.Mesh(new THREE.CylinderGeometry(17,17,6,32),ARM_D);well.position.y=4;m.add(well);
+  const tur=new THREE.Group();m.add(tur);
+  const bdy=new THREE.Mesh(new THREE.CylinderGeometry(14,15,9,24),ARM);tur.add(bdy);
+  const man=new THREE.Mesh(new THREE.BoxGeometry(14,9,18),ARM_L);man.position.set(0,-1,-8);tur.add(man);
+  const bar=new THREE.Mesh(new THREE.CylinderGeometry(3.4,3.8,64,14),ARM_D);bar.rotation.x=Math.PI/2;bar.position.set(0,-1,-46);tur.add(bar);
+  const brk=new THREE.Mesh(new THREE.CylinderGeometry(4.8,4.8,7,14),DARK);brk.rotation.x=Math.PI/2;brk.position.set(0,-1,-76);tur.add(brk);
+  const sl=new THREE.Mesh(new THREE.CylinderGeometry(4.6,4.6,10,14),YEL);sl.rotation.x=Math.PI/2;sl.position.set(0,-1,-20);tur.add(sl);
+  guns.push(tur);});
+
+// ---------- 4 SMALL BALLISTIC PD x6: sunk into the upper hull at x +-30, py 96/176/256 (arc 240 to their side)
+const pd=[];
+[-1,1].forEach(g=>[96,176,256].forEach((py,i)=>{const x=g*30,n=nrm(x,py);
+  const m=new THREE.Group();m.position.copy(W(CX+x,py,topY(x,py)-1.2));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),n);wpn.add(m);
+  const well=new THREE.Mesh(new THREE.CylinderGeometry(8,8,3,24),DARK);m.add(well);
+  const lipG=new THREE.Group();lipG.rotation.y=g*Math.PI/2;m.add(lipG);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(8.8,1.3,6,20,Math.PI),YEL);lip.rotation.x=Math.PI/2;lip.position.y=1.8;lipG.add(lip);
+  const tur=new THREE.Group();tur.position.y=1;m.add(tur);
+  const dome=new THREE.Mesh(new THREE.SphereGeometry(5,16,10,0,Math.PI*2,0,Math.PI/2),ARM_L);tur.add(dome);
+  [-1.6,1.6].forEach(o=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(0.9,0.9,11,8),ARM_D);b.rotation.x=Math.PI/2;b.position.set(o,2.2,-7);tur.add(b);});
+  tur.userData.base=-g*Math.PI/2;pd.push(tur);if(g>0&&i===1)tag('4',m,new THREE.Vector3(8,10,0));}));
+
+// ---------- 6 DRIVE CORE COVER: armoured petal hatch on the spine (py 216)
+const coreG=new THREE.Group();coreG.position.copy(W(CX,216,HH-1));hull.add(coreG);
+const cb=new THREE.Mesh(new THREE.CylinderGeometry(17,19,5,8),ARM_D);cb.position.y=1;coreG.add(cb);
+for(let k=0;k<8;k++){const a=k/8*Math.PI*2+Math.PI/8;const p=new THREE.Mesh(new THREE.BoxGeometry(9,2.4,12),ARM_L);p.position.set(Math.sin(a)*9,4.4,Math.cos(a)*9);p.rotation.y=a;p.rotateX(-0.18);coreG.add(p);
+  const s=new THREE.Mesh(new THREE.BoxGeometry(1,1,8),YEL);s.position.set(Math.sin(a+Math.PI/8)*10,4,Math.cos(a+Math.PI/8)*10);s.rotation.y=a+Math.PI/8;coreG.add(s);}
+const cap=new THREE.Mesh(new THREE.CylinderGeometry(4,4,3,8),YEL);cap.position.y=6;coreG.add(cap);
+const core=new THREE.PointLight(0xffc050,0.7,140);core.position.copy(W(CX,216,0));hull.add(core);
+
+// ---------- 5 COMMAND TOWER (Terra Light concept): 3 stepped tiers at the stern
+const towerG=new THREE.Group();hull.add(towerG);
+const rr=(w,d,h,r,mat,p)=>{const s=new THREE.Shape();const x=-w/2,y=-d/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+d-r);s.quadraticCurveTo(x+w,y+d,x+w-r,y+d);
+  s.lineTo(x+r,y+d);s.quadraticCurveTo(x,y+d,x,y+d-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
+  const m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:true,bevelThickness:2,bevelSize:1.8,bevelSegments:3,curveSegments:10}),mat);m.rotation.x=-Math.PI/2;m.position.copy(p);towerG.add(m);return m;};
+const tb=22;
+const t1=rr(46,68,26,10,ARM,W(CX,300,tb));
+const t2=rr(34,50,12,8,ARM_L,W(CX,298,tb+28));
+const t3=rr(20,30,10,6,ARM_L,W(CX,300,tb+42));
+const band=box(48,2,70,YEL,W(CX,300,tb+18),towerG);
+const glass=box(30,6,2,PNK,W(CX,298-26,tb+36),towerG);glass.rotation.x=-0.25;
+for(let k=-1;k<=1;k++){const mu=box(0.9,6.4,2.4,DARK,glass.position.clone().add(new THREE.Vector3(k*9,0,0)),towerG);mu.rotation.x=-0.25;}
+const fc=add(new THREE.Mesh(new THREE.SphereGeometry(5,16,10,0,Math.PI*2,0,Math.PI/2),ARM_L),W(CX,302,tb+54),towerG);
+const mast=box(1.6,16,1.6,ARM_L,W(CX,314,tb+60),towerG);const bea=add(new THREE.Mesh(new THREE.SphereGeometry(1.6,10,8),M(0xffffff,{emissive:0xffffff})),W(CX,314,tb+69),towerG);
+
+// ---------- 7 MAIN DRIVE: ribbed collar (py 348..398) + one big bell (ENG 95,416)
+const eng=new THREE.Group();eng.position.copy(W(CX,344));hull.add(eng);
+const neck=new THREE.Mesh(new THREE.CylinderGeometry(33,33,58,40),ARM_D);neck.rotation.x=Math.PI/2;neck.position.z=28;eng.add(neck);
+[[44,8],[43,20],[41,32],[39,44]].forEach(([r,z],i)=>{const rb=new THREE.Mesh(new THREE.CylinderGeometry(r,r,7,48),i===0?YEL:ARM_L);rb.rotation.x=Math.PI/2;rb.position.z=z;eng.add(rb);
+  for(let k=0;k<12;k++){const a=k/12*Math.PI*2;const n=new THREE.Mesh(new THREE.BoxGeometry(3,2,7.4),DARK);n.position.set(Math.cos(a)*(r-0.6),Math.sin(a)*(r-0.6),z);n.rotation.z=a;eng.add(n);}});
+const bell=new THREE.Mesh(new THREE.CylinderGeometry(30,36,26,48,1,true),ARM_D);bell.rotation.x=Math.PI/2;bell.position.z=66;bell.material.side=THREE.DoubleSide;eng.add(bell);
+const noz=new THREE.Mesh(new THREE.CircleGeometry(29,40),GLOW);noz.position.z=62;eng.add(noz);
+const eLight=new THREE.PointLight(0xffd060,0.6,120);eLight.position.z=90;eng.add(eLight);
+
+// ---------- 8 DIAGONAL JETS: rear quarters behind the claw bays, 45 deg outward
+const jets=[];[-1,1].forEach(g=>{const j=new THREE.Group();j.position.copy(W(CX+g*44,334,-4));j.rotation.y=g*Math.PI/4;hull.add(j);
+  const can=new THREE.Mesh(new THREE.CylinderGeometry(4.6,6,15,16,1,true),ARM_D);can.rotation.x=Math.PI/2;can.material.side=THREE.DoubleSide;j.add(can);
+  const cw=new THREE.Mesh(new THREE.TorusGeometry(6.2,1.1,6,16),ARM_L);cw.position.z=-5;j.add(cw);
+  const n=new THREE.Mesh(new THREE.CircleGeometry(4.6,16),GLOW);n.position.z=7;j.add(n);jets.push(j);});
+
+// ---------- 10 KEEL: belly spine from the gun gallery to the drive
+const keel=box(22,8,236,ARM_D,W(CX,240,-HH-2));
+for(let py=140;py<350;py+=30)box(24,9,2,DARK,W(CX,py,-HH-2));
+[-1,1].forEach(g=>{const nav=add(new THREE.Mesh(new THREE.SphereGeometry(2.2,12,8),M(g<0?0xff4a3a:0x5aff78,{emissive:g<0?0xff2010:0x20ff40})),W(CX+g*(HW+11),BAY0-6,0));});
+
+tag('1',cyl,new THREE.Vector3(-30,HH+8,40));tag('2',claws[6].cG,new THREE.Vector3(14,26,0));tag('3',guns[1],new THREE.Vector3(0,-14,-50));
+tag('5',t3,new THREE.Vector3(0,16,0));tag('6',coreG,new THREE.Vector3(0,14,0));tag('7',eng,new THREE.Vector3(0,-50,40));
+tag('8',jets[1],new THREE.Vector3(12,-8,0));tag('9',eye,new THREE.Vector3(0,12,-4));tag('10',keel,new THREE.Vector3(0,-10,40));
+
+// ---------- UI
+let view='all';
+document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{view=b.dataset.v;wpn.visible=view==='all';
+  document.querySelectorAll('#view button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===view));});
+function camTo(p){cam.position.copy(p);ctl.target.set(0,0,20);ctl.update();}
+document.getElementById('c-top').onclick=()=>camTo(new THREE.Vector3(0,720,20.1));
+document.getElementById('c-side').onclick=()=>camTo(new THREE.Vector3(620,30,20));
+document.getElementById('c-34').onclick=()=>camTo(new THREE.Vector3(-380,280,-380));
+document.getElementById('c-low').onclick=()=>camTo(new THREE.Vector3(-200,-60,-480));
+camTo(new THREE.Vector3(-380,280,-380));
+const tg=document.getElementById('tags'),sw=document.getElementById('sweep'),sp=document.getElementById('spin'),cl=document.getElementById('claws');
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();}
+addEventListener('resize',size);size();
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)sw.checked=false;
+const v=new THREE.Vector3();const t0=performance.now();let open=0;
+function loop(now){const t=(now-t0)/1000;
+  guns.forEach((g,i)=>{g.rotation.y=sw.checked?Math.sin(t*0.9+i*1.3)*Math.PI/18:0;});            // 20 deg arc
+  pd.forEach((p,i)=>{p.rotation.y=p.userData.base+(sw.checked?Math.sin(t*1.1+i)*Math.PI*2/3:0);}); // 240 deg arc
+  open+=((cl.checked?1:0)-open)*0.06;
+  const dO=Math.min(1,open*2),ext=Math.max(0,open*2-1)*60;
+  claws.forEach(c=>{c.dT.position.y=6.4+dO*11;c.dB.position.y=-6.4-dO*11;
+    c.cG.position.x=c.g*(BX-14+ext);const len=Math.max(0.01,ext-10);c.cab.scale.y=len;c.cab.position.set(c.g*(BX-12+len/2),0,c.py-210);c.cab.visible=ext>0.5;});
+  if(sp.checked)S.rotation.y+=.004;
+  ctl.update();R.render(S,cam);
+  tags.forEach(({d,obj,off})=>{let p=obj,vis_=tg.checked;while(p){if(!p.visible)vis_=false;p=p.parent;}d.hidden=!vis_;if(!vis_)return;
+    obj.getWorldPosition(v);v.add(off);v.project(cam);d.style.left=((v.x+1)/2*stage.clientWidth)+'px';d.style.top=((1-v.y)/2*stage.clientHeight)+'px';});
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>

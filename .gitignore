@@ -1,0 +1,13 @@
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak
+__pycache__/
+# release zips go on GitHub Releases, not in the repo
+*.zip
+# build output and scratch space of the dev pipeline
+dev/build/
+dev/_scratch/*
+!dev/_scratch/.gitkeep

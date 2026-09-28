@@ -1,0 +1,217 @@
+<title>Hastur 3D Block-out</title>
+<style>
+:root{--bg:#0d1014;--panel:#151a20;--line:#27303a;--ink:#dfe6ec;--mute:#8d99a5;--cyan:#56cee2;--pink:#ec60b0;--amber:#ffbe78;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+header{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;border-bottom:1px solid var(--line)}
+h1{font:600 18px "Chakra Petch","IBM Plex Sans",sans-serif;letter-spacing:.04em;margin:0}
+header p{margin:0;color:var(--mute);font-size:13px}
+main{flex:1;display:flex;min-height:0}
+#stage{flex:1;position:relative;min-width:0;min-height:320px}
+#stage canvas{display:block;width:100%;height:100%}
+.tag{position:absolute;transform:translate(-50%,-50%);font:600 11px "IBM Plex Mono",monospace;background:rgba(13,16,20,.85);border:1px solid var(--amber);color:var(--amber);border-radius:10px;padding:1px 6px;pointer-events:none;white-space:nowrap}
+aside{width:300px;background:var(--panel);border-left:1px solid var(--line);padding:14px 16px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.grp{display:flex;flex-direction:column;gap:6px}
+.lbl{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button,.btn{font:inherit;font-size:13px;background:#1c232b;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--cyan);color:#081418;border-color:var(--cyan)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+label.row{display:flex;gap:8px;align-items:center;cursor:pointer}
+input[type=range]{width:100%}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+ol li{color:var(--ink)}
+ol li span{color:var(--mute);font-size:12px;display:block}
+.note{color:var(--mute);font-size:12px}
+@media (max-width:760px){main{flex-direction:column}aside{width:auto;border-left:0;border-top:1px solid var(--line)}#stage{height:62vh;flex:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>HASTUR · 3D block-out</h1><p>Terra Light cruiser. Drag to orbit, scroll to zoom, right-drag to pan. Numbers match the parts list.</p></header>
+<main>
+<div id="stage"></div>
+<aside>
+  <div class="grp"><div class="lbl">Show</div>
+    <div class="seg" id="view">
+      <button id="v-all" aria-pressed="true" data-v="all">Whole ship</button>
+      <button id="v-front" aria-pressed="false" data-v="front">Front hull</button>
+      <button id="v-mod" aria-pressed="false" data-v="mod">Command module</button>
+    </div></div>
+  <div class="grp"><div class="lbl">Separate the module</div><input id="explode" type="range" min="0" max="1" step="0.01" value="0"></div>
+  <div class="grp"><div class="lbl">Camera</div>
+    <div class="seg"><button class="btn" id="c-top">Top (sprite view)</button><button class="btn" id="c-side">Side</button><button class="btn" id="c-34">3/4</button></div></div>
+  <div class="grp">
+    <label class="row"><input type="checkbox" id="tags" checked> Part numbers</label>
+    <label class="row"><input type="checkbox" id="sweep" checked> Sweep guns through their arcs</label>
+    <label class="row"><input type="checkbox" id="spin"> Turntable</label>
+  </div>
+  <div class="grp"><div class="lbl">Parts</div>
+    <ol>
+      <li>Front hull (main ship)<span>Fat armoured hull over the front half of the ball; the drive core is inside (cyan vents)</span></li>
+      <li>Built-in medium energy ×4<span>Tiamat mechanism with 2 barrels: arm + collar fixed, barrels turn 135°</span></li>
+      <li>Armoured sponsons ×4<span>Contour lobes carrying the built-in guns</span></li>
+      <li>Medium ballistic ×3<span>In a column along the belly of the front hull, 90° forward arc</span></li>
+      <li>Command module (back hull)<span>The whole ball is the command room</span></li>
+      <li>Command visor<span>Curved glass on the ball's front face, under the front hull</span></li>
+      <li>Small ballistic ×2 (front)<span>In line with the hangar, either side</span></li>
+      <li>Docking hangar<span>Fighter bay below the visor</span></li>
+      <li>Main drives ×2</li>
+      <li>Diagonal jets ×2</li>
+      <li>Small ballistic ×2 (rear)<span>Out on the ball's sides, beside the diagonal jets</span></li>
+      <li>Hull connection<span>Elevator tower: armoured column, 2 glass lift tubes with cars, clamp collars top and bottom</span></li>
+    </ol></div>
+  <p class="note">Proportions follow the 200 × 440 px sprite (1 unit = 1 px). Heights are my guesses from the Earth Light art; tell me where to change them.</p>
+</aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage');
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));stage.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0x0d1014);
+const cam=new THREE.PerspectiveCamera(38,1,1,5000);
+const ctl=new THREE.OrbitControls(cam,R.domElement);ctl.enableDamping=true;ctl.target.set(0,20,0);
+S.add(new THREE.HemisphereLight(0xcfe6ff,0x20262c,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(-160,320,-240);S.add(sun);
+const rim=new THREE.DirectionalLight(0x86d6ff,0.35);rim.position.set(200,80,300);S.add(rim);
+const grid=new THREE.GridHelper(800,40,0x27303a,0x1a2027);grid.position.y=-64;S.add(grid);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,metalness:.55,roughness:.45},o));
+const ARM=M(0x9aa2aa),ARM_L=M(0xb9c0c6),ARM_D=M(0x6c747c),DARK=M(0x22272d,{roughness:.8}),
+      CY=M(0x56cee2,{emissive:0x0f4d58,metalness:.3}),PK=M(0xec60b0,{emissive:0x4a0f30,metalness:.3}),
+      VIS=M(0x3a64d8,{emissive:0x14307a,metalness:.2,roughness:.15}),GLOW=M(0xffc080,{emissive:0xff8a30});
+// sprite px -> world: x = px-100, z = py-220 (z+ = aft), y = up
+const W=(px,py,y=0)=>new THREE.Vector3(px-100,y,py-220);
+const tags=[];function tag(n,obj,off){const d=document.createElement('div');d.className='tag';d.textContent=n;stage.appendChild(d);tags.push({d,obj,off:off||new THREE.Vector3()});}
+
+// ---------- 5 COMMAND MODULE (ball) - rounder (vertical radius 60)
+const mod=new THREE.Group();S.add(mod);
+const BC=W(100,342,0), BRV=60, BRH=75;
+const ball=new THREE.Mesh(new THREE.SphereGeometry(BRH,64,40),ARM);ball.scale.set(1,BRV/BRH,1);ball.position.copy(BC);mod.add(ball);
+const onBall=(phi,th,out=0)=>new THREE.Vector3(-(BRH+out)*Math.cos(phi)*Math.sin(th),(BRV+out*BRV/BRH)*Math.cos(th),(BRH+out)*Math.sin(phi)*Math.sin(th)).add(BC);
+// armour: latitude seams + stepped cyan band + meridian ribs
+[0.18,0.62,0.78].forEach(f=>{const th=Math.PI*f;const r=BRH*Math.sin(th)+0.6;const s=new THREE.Mesh(new THREE.TorusGeometry(r,0.8,6,96),DARK);s.rotation.x=Math.PI/2;s.position.copy(BC).add(new THREE.Vector3(0,BRV*Math.cos(th),0));mod.add(s);});
+const band=new THREE.Mesh(new THREE.TorusGeometry(BRH*Math.sin(Math.PI*.7)+1.2,2.4,10,96),CY);band.rotation.x=Math.PI/2;band.position.copy(BC).add(new THREE.Vector3(0,BRV*Math.cos(Math.PI*.7),0));mod.add(band);
+for(let k=0;k<12;k++){const ph=k/12*Math.PI*2;if(Math.abs(((ph-Math.PI*1.5+Math.PI)%(2*Math.PI))-Math.PI)<0.7)continue;
+  const pts=[];for(let i=0;i<=16;i++){pts.push(onBall(ph,Math.PI*(0.2+0.55*i/16),0.6));}
+  const rib=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,1.1,6),ARM_L);mod.add(rib);}
+// 6 visor: on the FRONT face of the ball, under the front hull
+const visG=new THREE.SphereGeometry(BRH+0.8,48,8,Math.PI*1.22,Math.PI*0.56,Math.PI*0.26,Math.PI*0.10);
+const vis=new THREE.Mesh(visG,VIS);vis.scale.set(1,BRV/BRH,1);vis.position.copy(BC);mod.add(vis);
+const visF=new THREE.Mesh(new THREE.SphereGeometry(BRH+0.5,48,8,Math.PI*1.19,Math.PI*0.62,Math.PI*0.24,Math.PI*0.14),ARM_L);visF.scale.set(1,BRV/BRH,1);visF.position.copy(BC);mod.add(visF);
+for(let k=1;k<8;k++){const ph=Math.PI*(1.22+0.56*k/8);const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(onBall(ph,Math.PI*.26,1.2),onBall(ph,Math.PI*.36,1.2)),1,0.5,4),DARK);mod.add(m);}
+// 8 docking hangar (fighter bay) below the visor
+const hq=new THREE.Group();mod.add(hq);
+const hpos=onBall(Math.PI*1.5,Math.PI*0.5,0);hq.position.copy(hpos);
+const hFrame=new THREE.Mesh(new THREE.BoxGeometry(56,24,10),ARM_L);hFrame.position.z=2;hq.add(hFrame);
+const hMouth=new THREE.Mesh(new THREE.BoxGeometry(46,16,10),new THREE.MeshBasicMaterial({color:0x06080a}));hMouth.position.z=-0.8;hq.add(hMouth);
+for(let i=0;i<8;i++){const l=new THREE.Mesh(new THREE.BoxGeometry(2,1.2,1),GLOW);l.position.set(-20+i*5.7,-9.5,-3.4);hq.add(l);}
+[-1,1].forEach(g=>{const c=new THREE.Mesh(new THREE.BoxGeometry(5,24,12),ARM_D);c.position.set(g*30.5,0,2);hq.add(c);});
+// 7 small ballistic either side of the visor / hangar
+const smb=[];[-1,1].forEach(g=>{const b=new THREE.Group();const base=new THREE.Mesh(new THREE.CylinderGeometry(7,8.5,5,20),ARM_D);base.rotation.x=Math.PI/2;b.add(base);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(9,1.2,6,20,Math.PI),CY);lip.rotation.z=g>0?-Math.PI/2:Math.PI/2;b.add(lip);
+  [-1.6,1.6].forEach(d=>{const br=new THREE.Mesh(new THREE.CylinderGeometry(1.1,1.1,14,8),ARM_L);br.rotation.x=Math.PI/2;br.position.set(d,0,-8);b.add(br);});
+  b.position.copy(onBall(Math.PI*(1.5+g*0.25),Math.PI*0.5,1));b.lookAt(onBall(Math.PI*(1.5+g*0.25),Math.PI*0.5,40));b.rotateY(Math.PI);mod.add(b);smb.push(b);});
+// 11 small ballistic x2 near the diagonal jets (rear quarters)
+const smbR=[];[-1,1].forEach(g=>{const b=new THREE.Group();const base=new THREE.Mesh(new THREE.CylinderGeometry(7,8.5,5,20),ARM_D);base.rotation.x=Math.PI/2;b.add(base);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(9,1.2,6,20,Math.PI),CY);lip.rotation.z=g>0?-Math.PI/2:Math.PI/2;b.add(lip);
+  [-1.6,1.6].forEach(d=>{const br=new THREE.Mesh(new THREE.CylinderGeometry(1.1,1.1,14,8),ARM_L);br.rotation.x=Math.PI/2;br.position.set(d,0,-8);b.add(br);});
+  const ph=Math.PI*(0.5+g*0.40);b.position.copy(onBall(ph,Math.PI*0.40,1));b.lookAt(onBall(ph,Math.PI*0.40,40));b.rotateY(Math.PI);mod.add(b);smbR.push(b);});
+// 9 main drives, 10 diagonal jets
+const eng=[];[70,130].forEach(x=>{const e=new THREE.Group();const can=new THREE.Mesh(new THREE.CylinderGeometry(10,13,34,24,1,true),ARM_D);can.rotation.x=Math.PI/2;e.add(can);
+  const noz=new THREE.Mesh(new THREE.CircleGeometry(10,24),GLOW);noz.position.z=17;e.add(noz);e.position.copy(W(x,410,-8));mod.add(e);eng.push(e);});
+const jets=[];[-1,1].forEach(g=>{const j=new THREE.Group();const can=new THREE.Mesh(new THREE.CylinderGeometry(5,6.5,18,16,1,true),ARM_D);can.rotation.x=Math.PI/2;j.add(can);
+  const noz=new THREE.Mesh(new THREE.CircleGeometry(5,16),GLOW);noz.position.z=9;j.add(noz);
+  j.position.copy(BC).add(new THREE.Vector3(g*56,-6,50));j.rotation.y=g*Math.PI/4;mod.add(j);jets.push(j);});
+
+// ---------- 1 FRONT HULL - fatter (the drive core lives inside it), sits on top of the ball's front half
+const front=new THREE.Group();S.add(front);
+const Rp=[[0,14],[26,16],[50,24],[64,38],[70,60],[70,132],[62,150],[62,172],[70,188],[70,236],[64,264],[60,294],[54,320],[40,338],[20,346],[0,348]];
+const sh=new THREE.Shape();Rp.forEach(([a,y],i)=>{const p=[a,-(y-220)];i?sh.lineTo(...p):sh.moveTo(...p);});
+for(let i=Rp.length-2;i>0;i--){sh.lineTo(-Rp[i][0],-(Rp[i][1]-220));}
+const HB=90, HT=34;                                   // hull sits on a docking cradle above the ball (see CONNECTION)                                   // hull bottom height, thickness
+const fh=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:HT,bevelEnabled:true,bevelThickness:7,bevelSize:6,bevelSegments:5,curveSegments:24}),ARM);
+fh.rotation.x=-Math.PI/2;fh.position.y=HB;front.add(fh);
+const TOP=HB+HT+7;
+// top armour: raised plates in 3 longitudinal bands (spine highest), with seams
+const plates=[[70,140],[140,210],[210,280],[280,330]];
+plates.forEach(([a,b],k)=>{const sp=new THREE.Mesh(new THREE.BoxGeometry(38,5,b-a-3),ARM_L);sp.position.copy(W(100,(a+b)/2,TOP+2.5));front.add(sp);
+  [-1,1].forEach(g=>{const w=k===3?18:24;const bp=new THREE.Mesh(new THREE.BoxGeometry(w,3,b-a-3),ARM);bp.position.copy(W(100+g*(19+w/2+1.5),(a+b)/2,TOP+1.5));front.add(bp);});});
+const nose=new THREE.Mesh(new THREE.BoxGeometry(60,4,44),ARM_L);nose.position.copy(W(100,46,TOP+2));front.add(nose);
+[-1,1].forEach(g=>{const l=new THREE.Mesh(new THREE.BoxGeometry(1.6,1,262),CY);l.position.copy(W(100+g*44,199,TOP+3.2));front.add(l);});
+// side walls: armour belt + panel seams + core heat vents (cyan glow = drive core inside)
+[-1,1].forEach(g=>{
+  [[60,132],[188,236]].forEach(([a,b])=>{const belt=new THREE.Mesh(new THREE.BoxGeometry(4,16,b-a),ARM_L);belt.position.copy(W(100+g*(70+6.5),(a+b)/2,HB+HT*0.5));front.add(belt);
+    for(let z=a+12;z<b;z+=18){const s=new THREE.Mesh(new THREE.BoxGeometry(4.6,16.4,1),DARK);s.position.copy(W(100+g*(70+6.5),z,HB+HT*0.5));front.add(s);}});
+  for(let k=0;k<4;k++){const v=new THREE.Mesh(new THREE.BoxGeometry(2,3,7),CY);v.position.copy(W(100+g*(62+6.8),150+k*6.5,HB+HT*0.55));front.add(v);}
+});
+const core=new THREE.PointLight(0x56cee2,0.9,160);core.position.copy(W(100,160,HB+HT*0.5));front.add(core);
+// ---------- CONNECTION between the hulls: an ELEVATOR TOWER from the ball's crown up into the front hull's belly
+// (clear of the visor, hangar and guns). Armoured core column, 2 glass lift tubes with lit cars, clamp collars top + bottom.
+const EL=new THREE.Group();mod.add(EL);
+const eP=W(100,326,0), eBot=BRV-4, eTop=HB-6;
+const botC=new THREE.Mesh(new THREE.CylinderGeometry(30,36,8,48),ARM_D);botC.position.copy(eP).add(new THREE.Vector3(0,eBot+2,0));EL.add(botC);
+const botR=new THREE.Mesh(new THREE.TorusGeometry(33,2.2,8,48),ARM_L);botR.rotation.x=Math.PI/2;botR.position.copy(eP).add(new THREE.Vector3(0,eBot+6,0));EL.add(botR);
+for(let k=0;k<12;k++){const a=k/12*Math.PI*2;const bolt=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,3,8),DARK);bolt.position.copy(botR.position).add(new THREE.Vector3(Math.cos(a)*33,2.2,Math.sin(a)*33));EL.add(bolt);}
+const colH=eTop-eBot;
+const col=new THREE.Mesh(new THREE.CylinderGeometry(16,18,colH,32),ARM);col.position.copy(eP).add(new THREE.Vector3(0,eBot+colH/2,0));EL.add(col);
+for(const f of [0.3,0.7]){const s=new THREE.Mesh(new THREE.TorusGeometry(18.2,0.8,6,32),DARK);s.rotation.x=Math.PI/2;s.position.copy(eP).add(new THREE.Vector3(0,eBot+colH*f,0));EL.add(s);}
+const GLASS=new THREE.MeshStandardMaterial({color:0x7fe3f2,transparent:true,opacity:.35,metalness:.1,roughness:.1,emissive:0x0b3a44});
+[-1,1].forEach(g=>{const tp=eP.clone().add(new THREE.Vector3(g*22,0,0));
+  const tube=new THREE.Mesh(new THREE.CylinderGeometry(6,6,colH,20,1,true),GLASS);tube.position.copy(tp).add(new THREE.Vector3(0,eBot+colH/2,0));EL.add(tube);
+  [0,1].forEach(i=>{const r=new THREE.Mesh(new THREE.TorusGeometry(6.4,1,6,20),ARM_L);r.rotation.x=Math.PI/2;r.position.copy(tp).add(new THREE.Vector3(0,eBot+2+i*(colH-4),0));EL.add(r);});
+  const car=new THREE.Mesh(new THREE.BoxGeometry(7,6,7),M(0xdfe6ec,{emissive:0x3a5a66}));car.position.copy(tp).add(new THREE.Vector3(0,eBot+colH*(g>0?.35:.7),0));EL.add(car);
+  const br=new THREE.Mesh(new THREE.BoxGeometry(6,colH,3),ARM_D);br.position.copy(eP).add(new THREE.Vector3(g*15,eBot+colH/2,0));EL.add(br);});
+const topC=new THREE.Mesh(new THREE.CylinderGeometry(34,28,7,48),ARM_D);topC.position.copy(eP).add(new THREE.Vector3(0,eTop+2,0));front.add(topC);
+const topR=new THREE.Mesh(new THREE.TorusGeometry(24,1,8,48),CY);topR.rotation.x=Math.PI/2;topR.position.copy(eP).add(new THREE.Vector3(0,eTop-1.6,0));front.add(topR);
+const clamp=botR;
+// 4 medium ballistic x3: in a column along the belly (under the front hull), 90 deg forward arc
+const rails=[];[70,120,170].forEach(py=>{const r=new THREE.Group();
+  const base=new THREE.Mesh(new THREE.CylinderGeometry(10,11,6,24),ARM_D);r.add(base);
+  const hub=new THREE.Mesh(new THREE.BoxGeometry(12,7,14),ARM);hub.position.y=-5;r.add(hub);
+  [-3,3].forEach(d=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(1.8,1.8,28,10),ARM_L);b.rotation.x=Math.PI/2;b.position.set(d,-5,-18);r.add(b);});
+  r.position.copy(W(100,py,HB-7));front.add(r);rails.push(r);});
+// 3 sponsons + 2 built-in side turrets (Tiamat mechanism, 2 barrels)
+const guns=[];[[100],[210]].forEach(([y])=>[-1,1].forEach(g=>{
+  const GY=HB+HT*0.5;
+  const sp=new THREE.Mesh(new THREE.SphereGeometry(22,24,16),ARM_L);sp.scale.set(.9,.95,1.5);sp.position.copy(W(100+g*72,y,GY));front.add(sp);
+  const seam=new THREE.Mesh(new THREE.TorusGeometry(19.5,0.7,6,32),DARK);seam.scale.set(.9,1,1);seam.rotation.y=Math.PI/2;seam.position.copy(W(100+g*72,y,GY));front.add(seam);
+  const arm=new THREE.Mesh(new THREE.BoxGeometry(22,9,11),ARM);arm.position.copy(W(100+g*80,y,GY));front.add(arm);
+  const col=new THREE.Mesh(new THREE.CylinderGeometry(10,10,12,28),ARM_L);col.rotation.z=Math.PI/2;col.position.copy(W(100+g*92,y,GY));front.add(col);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(7,1.1,8,28),PK);ring.rotation.y=Math.PI/2;ring.position.copy(W(100+g*98.5,y,GY));front.add(ring);
+  const bar=new THREE.Group();bar.position.copy(W(100+g*100,y,GY));
+  [-3.2,3.2].forEach(d=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,38,12),ARM_D);b.rotation.x=Math.PI/2;b.position.set(g*3,d,-17);bar.add(b);});
+  const hub=new THREE.Mesh(new THREE.BoxGeometry(11,14,13),ARM);bar.add(hub);front.add(bar);
+  const lo=y<150?0:45,hi=y<150?135:180;guns.push({bar,g,lo,hi});
+  if(y===100&&g===1){tag('2',bar,new THREE.Vector3(0,16,0));tag('3',sp,new THREE.Vector3(0,26,0));}
+}));
+tag('1',nose,new THREE.Vector3(0,10,40));tag('4',rails[1],new THREE.Vector3(0,-18,0));
+tag('5',ball,new THREE.Vector3(0,-46,50));tag('6',vis,new THREE.Vector3(0,34,-58));tag('7',smb[1],new THREE.Vector3(12,6,0));
+tag('8',hq,new THREE.Vector3(0,-18,-4));tag('11',smbR[1],new THREE.Vector3(12,8,0));tag('12',col,new THREE.Vector3(24,0,0));tag('9',eng[1],new THREE.Vector3(0,-16,10));tag('10',jets[1],new THREE.Vector3(14,-8,6));
+
+// ---------- UI
+let view='all',ex=0;
+function applyView(){front.visible=view!=='mod';mod.visible=view!=='front';
+  document.querySelectorAll('#view button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===view));}
+document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{view=b.dataset.v;applyView();});
+document.getElementById('explode').oninput=e=>{ex=+e.target.value;mod.position.set(0,-60*ex,90*ex);};
+function camTo(p){cam.position.copy(p);ctl.target.set(0,30,20);ctl.update();}
+document.getElementById('c-top').onclick=()=>camTo(new THREE.Vector3(0,720,40.1));
+document.getElementById('c-side').onclick=()=>camTo(new THREE.Vector3(620,40,40));
+document.getElementById('c-34').onclick=()=>camTo(new THREE.Vector3(-380,300,-420));
+camTo(new THREE.Vector3(-380,300,-420));
+const tg=document.getElementById('tags'),sw=document.getElementById('sweep'),sp=document.getElementById('spin');
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();}
+addEventListener('resize',size);size();
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce){sw.checked=false;}
+const v=new THREE.Vector3();let t0=performance.now();
+function loop(now){const t=(now-t0)/1000;
+  rails.forEach((r,i)=>{r.rotation.y=sw.checked?Math.sin(t*.9+i)*Math.PI/4:0;});
+  guns.forEach(({bar,g,lo,hi})=>{const u=sw.checked?.5+.5*Math.sin(t*.8):.5;const a=(lo+(hi-lo)*u)*Math.PI/180;bar.rotation.y=g>0?-a:a;});
+  if(sp.checked){S.rotation.y+=.004;}
+  ctl.update();R.render(S,cam);
+  tags.forEach(({d,obj,off})=>{const vis_=tg.checked&&obj.parent&&obj.parent.visible;d.hidden=!vis_;if(!vis_)return;
+    obj.getWorldPosition(v);v.add(off);v.project(cam);d.style.left=((v.x+1)/2*stage.clientWidth)+'px';d.style.top=((1-v.y)/2*stage.clientHeight)+'px';});
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>

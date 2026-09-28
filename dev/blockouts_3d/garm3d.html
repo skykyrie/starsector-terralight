@@ -1,0 +1,212 @@
+<title>Garm 3D Block-out</title>
+<style>
+:root{--bg:#0f1012;--panel:#16181b;--line:#2c2f34;--ink:#e6e9ee;--mute:#99a1ad;--vio:#3f9a78;--amber:#ffb24a;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+header{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;border-bottom:1px solid var(--line)}
+h1{font:600 18px "Chakra Petch","IBM Plex Sans",sans-serif;letter-spacing:.04em;margin:0}
+header p{margin:0;color:var(--mute);font-size:13px}
+main{flex:1;display:flex;min-height:0}
+#stage{flex:1;position:relative;min-width:0;min-height:320px}
+#stage canvas{display:block;width:100%;height:100%}
+.tag{position:absolute;transform:translate(-50%,-50%);font:600 11px "IBM Plex Mono",monospace;background:rgba(15,13,20,.85);border:1px solid var(--amber);color:var(--amber);border-radius:10px;padding:1px 6px;pointer-events:none;white-space:nowrap}
+aside{width:300px;background:var(--panel);border-left:1px solid var(--line);padding:14px 16px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.grp{display:flex;flex-direction:column;gap:6px}
+.lbl{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button,.btn{font:inherit;font-size:13px;background:#1e2024;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--vio);color:#04201a;border-color:var(--vio)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+label.row{display:flex;gap:8px;align-items:center;cursor:pointer}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+ol li span{color:var(--mute);font-size:12px;display:block}
+.note{color:var(--mute);font-size:12px}
+@media (max-width:760px){main{flex-direction:column}aside{width:auto;border-left:0;border-top:1px solid var(--line)}#stage{height:62vh;flex:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>GARM · 3D block-out</h1><p>Terra Light assault destroyer. Drag to orbit, scroll to zoom, right-drag to pan. Numbers match the parts list.</p></header>
+<main>
+<div id="stage"></div>
+<aside>
+  <div class="grp"><div class="lbl">Show</div>
+    <div class="seg" id="view">
+      <button aria-pressed="true" data-v="all">Whole ship</button>
+      <button aria-pressed="false" data-v="hull">Hull only</button>
+    </div></div>
+  <div class="grp"><div class="lbl">Camera</div>
+    <div class="seg"><button class="btn" id="c-top">Top (sprite view)</button><button class="btn" id="c-side">Side</button><button class="btn" id="c-34">3/4</button><button class="btn" id="c-low">Low front</button><button class="btn" id="c-rear">Rear</button></div></div>
+  <div class="grp"><div class="lbl">Flight preview (thrusters)</div>
+    <div class="seg" id="fly">
+      <button aria-pressed="true" data-m="idle">Idle</button><button aria-pressed="false" data-m="fwd">Forward</button>
+      <button aria-pressed="false" data-m="sl">Strafe L</button><button aria-pressed="false" data-m="sr">Strafe R</button>
+      <button aria-pressed="false" data-m="tl">Turn L</button><button aria-pressed="false" data-m="tr">Turn R</button>
+    </div></div>
+  <div class="grp">
+    <label class="row"><input type="checkbox" id="tags" checked> Part numbers</label>
+    <label class="row"><input type="checkbox" id="sweep" checked> Sweep guns through their arcs</label>
+    <label class="row"><input type="checkbox" id="spin"> Turntable</label>
+  </div>
+  <div class="grp"><div class="lbl">Parts</div>
+    <ol>
+      <li>Dome hull<span>Big tall armoured dome (EL yellow dome), ochre armour with orange livery, stepped plate rows</span></li>
+      <li>Small ballistic ×3<span>Terraced down the dome's centreline (each one higher than the one in front, so they fire over each other), sunk with orange lips, 120° forward arc</span></li>
+      <li>Quad railgun bay<span>Large ballistic under the forward belly (pulled back from the nose), drawn below the hull: armoured belly bay, the 4 barrels poke out past the nose, 10° arc (EL pink quad barrels)</span></li>
+      <li>Rear box<span>Rounded armoured block behind the dome (EL orange box) with jade side panels (EL green panels)</span></li>
+      <li>Command tower<span>Long 3-tier tower along the rear box top (py ~151-209), jade visor glass forward, fire-control dome</span></li>
+      <li>Main drive<span>Grey ribbed collar (EL ribs) + bell nozzle with cooling ribs and a hot throat</span></li>
+      <li>Side thruster pods ×2<span>On swivel hubs off the rear box: fire aft for forward thrust, vector for strafing, differential for turning (no diagonal jets)</span></li>
+      <li>Small ballistic PD ×2<span>On the rear engine box near its rear corners, facing back, 180° arc, orange lip on the aft side</span></li>
+    </ol></div>
+  <p class="note">Top-down proportions follow the 200 × 250 px sprite (1 unit = 1 px). Heights are my guesses from the Earth Light art.</p>
+</aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage');
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));stage.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0x0f1012);
+const cam=new THREE.PerspectiveCamera(38,1,1,4000);
+const ctl=new THREE.OrbitControls(cam,R.domElement);ctl.enableDamping=true;
+S.add(new THREE.HemisphereLight(0xf6f2ea,0x22201c,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.9);sun.position.set(-160,320,-240);S.add(sun);
+const rim=new THREE.DirectionalLight(0x9ff0d0,0.25);rim.position.set(200,80,300);S.add(rim);
+const grid=new THREE.GridHelper(600,40,0x2c2f34,0x191b1e);grid.position.y=-50;S.add(grid);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,metalness:.5,roughness:.5},o));
+const ARM=M(0x9e7c4c),ARM_L=M(0xc4a676),ARM_D=M(0x5e4a30),DARK=M(0x1c1914,{roughness:.8}),GREY=M(0x8a8e94,{metalness:.7,roughness:.35}),GREY_D=M(0x4a4e54,{metalness:.7,roughness:.4}),
+      ORG=M(0xe0782a,{emissive:0x3a1400,metalness:.4,roughness:.4}),JADE=M(0x3f9a78,{emissive:0x0a2a1e,metalness:.35,roughness:.45}),GLS=M(0x7ff0c8,{emissive:0x1a6048,metalness:.2,roughness:.15}),
+      RED=M(0xd8384a,{emissive:0x3a0610,metalness:.4}),GUN=M(0x6c7078,{metalness:.7,roughness:.35}),RAIL=M(0x5a5e66,{metalness:.8,roughness:.3});
+const CX=100,W=(px,py,y=0)=>new THREE.Vector3(px-CX,y,py-125);
+const tags=[];function tag(n,obj,off){const d=document.createElement('div');d.className='tag';d.textContent=n;stage.appendChild(d);tags.push({d,obj,off:off||new THREE.Vector3()});}
+const hull=new THREE.Group(),wpn=new THREE.Group();S.add(hull);S.add(wpn);
+const add=(m,p,g=hull)=>{if(p)m.position.copy(p);g.add(m);return m;};
+const box=(w,h,d,mat,p,g)=>add(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat),p,g);
+const mk=p=>{const o=new THREE.Object3D();o.position.copy(p);hull.add(o);return o;};
+
+// ---------- 1 DOME HULL: tall ellipsoid (70 wide, 66 up, 30 down), centre (100,98), front rounded, merges into the rear box
+const DC=W(100,98,0),DX=70,DY=66,DZ=68;
+const dg=new THREE.SphereGeometry(1,72,48);const dp=dg.attributes.position;for(let i=0;i<dp.count;i++){if(dp.getY(i)<0)dp.setY(i,dp.getY(i)*0.45);}dg.computeVertexNormals();
+const dome=new THREE.Mesh(dg,ARM);dome.scale.set(DX,DY,DZ);dome.position.copy(DC);hull.add(dome);
+const hD=(dx,py)=>{const zz=(py-98)/DZ,xx=dx/DX,q=1-zz*zz-xx*xx;return q>0?DY*Math.sqrt(q):0;};
+const nD=(dx,py)=>new THREE.Vector3(dx/(DX*DX),hD(dx,py)/(DY*DY),(py-98)/(DZ*DZ)).normalize();
+// stepped plate rows (latitude bands), orange livery ring, meridian seams
+[0.35,0.62,0.84].forEach((l,i)=>{const r=new THREE.Mesh(new THREE.TorusGeometry(1,0.012,6,72),i===1?ORG:DARK);const k=Math.cos(l);r.scale.set(DX*k+0.6,DZ*k+0.6,i===1?2.2:1);r.rotation.x=Math.PI/2;r.position.copy(DC).add(new THREE.Vector3(0,DY*Math.sin(l),0));hull.add(r);});
+const eq=new THREE.Mesh(new THREE.TorusGeometry(1,0.02,8,72),ARM_D);eq.scale.set(DX+1,DZ+1,1);eq.rotation.x=Math.PI/2;eq.position.copy(DC).add(new THREE.Vector3(0,1,0));hull.add(eq);
+for(let k=0;k<12;k++){const a=k/12*Math.PI*2;if(Math.abs(Math.sin(a))<0.25)continue;const pts=[];for(let i=0;i<=12;i++){const lat=0.05+1.1*i/12;pts.push(new THREE.Vector3((DX+0.5)*Math.cos(lat)*Math.sin(a),(DY+0.5)*Math.sin(lat),-(DZ+0.5)*Math.cos(lat)*Math.cos(a)).add(DC));}
+  hull.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,0.5,5),DARK));}
+// ---------- 4 REAR BOX: rounded armoured block py 138-214, hw 58, y -26..44
+const rs=new THREE.Shape();const bw=58,bz0=138,bz1=214,r0=14;
+rs.moveTo(-bw+r0,-(bz0-125));rs.lineTo(bw-r0,-(bz0-125));rs.quadraticCurveTo(bw,-(bz0-125),bw,-(bz0+r0-125));rs.lineTo(bw,-(bz1-r0-125));rs.quadraticCurveTo(bw,-(bz1-125),bw-r0,-(bz1-125));
+rs.lineTo(-bw+r0,-(bz1-125));rs.quadraticCurveTo(-bw,-(bz1-125),-bw,-(bz1-r0-125));rs.lineTo(-bw,-(bz0+r0-125));rs.quadraticCurveTo(-bw,-(bz0-125),-bw+r0,-(bz0-125));
+const rbox=new THREE.Mesh(new THREE.ExtrudeGeometry(rs,{depth:64,bevelEnabled:true,bevelThickness:6,bevelSize:6,bevelSegments:4}),ARM);rbox.rotation.x=-Math.PI/2;rbox.position.y=-24;hull.add(rbox);
+box(100,3,58,ARM_L,W(100,178,46.5));box(104,1.4,62,ORG,W(100,178,44.6));                         // top plate + orange trim
+[-1,1].forEach(g=>{const jp=box(3,34,54,JADE,W(100+g*(bw+6.2),178,10));for(let k=0;k<5;k++)box(3.6,30,1.2,DARK,W(100+g*(bw+6.4),156+k*11,10));});   // jade side panels (EL)
+// ---------- 5 COMMAND TOWER where the EL green bump sits (top of the dome/box join)
+const towerG=new THREE.Group();hull.add(towerG);
+const rr=(w,d,h,r,mat,p)=>{const s=new THREE.Shape();const x=-w/2,y=-d/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+d-r);s.quadraticCurveTo(x+w,y+d,x+w-r,y+d);
+  s.lineTo(x+r,y+d);s.quadraticCurveTo(x,y+d,x,y+d-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
+  const m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:true,bevelThickness:1.6,bevelSize:1.4,bevelSegments:3,curveSegments:8}),mat);m.rotation.x=-Math.PI/2;m.position.copy(p);towerG.add(m);return m;};
+const TB=48;
+const t1=rr(36,58,10,7,ARM,W(100,180,TB));const t2=rr(27,48,8,5,ARM_L,W(100,181,TB+12));const t3=rr(16,32,6,4,ARM_L,W(100,184,TB+22));
+const vis=box(22,3.4,1.4,GLS,W(100,157.6,TB+16.5),towerG);vis.rotation.x=-0.3;
+box(38,1.2,60,JADE,W(100,180,TB+6),towerG);
+for(let k=0;k<4;k++)[-1,1].forEach(g=>box(6,0.8,1.2,DARK,W(100+g*7,190+k*3,TB+29.2),towerG));
+const fcd=add(new THREE.Mesh(new THREE.SphereGeometry(4,14,8,0,Math.PI*2,0,Math.PI/2),ARM_L),W(100,176,TB+30),towerG);
+// ---------- 2 SMALL BALLISTIC x3, terraced down the dome centreline (py 50/80/110), sunk with orange lips
+const guns=[];[50,80,110].forEach((py,i)=>{const h=hD(0,py),n=nD(0,py);
+  const m=new THREE.Group();m.position.copy(W(100,py,h-1.5));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),n);wpn.add(m);
+  const well=new THREE.Mesh(new THREE.CylinderGeometry(9.5,9.5,4,24),DARK);m.add(well);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(10.2,1.3,8,28),ORG);lip.rotation.x=Math.PI/2;lip.position.y=2;m.add(lip);
+  const up=new THREE.Group();up.quaternion.copy(m.quaternion.clone().invert());m.add(up);                         // keep turrets level
+  const PH=[9,5,5][i];const ped=new THREE.Mesh(new THREE.CylinderGeometry(5,6,PH,16),ARM_D);ped.position.y=PH/2;up.add(ped);
+  const tur=new THREE.Group();tur.position.y=PH;up.add(tur);
+  const d=new THREE.Mesh(new THREE.SphereGeometry(7,18,10,0,Math.PI*2,0,Math.PI/2),GUN);d.scale.y=0.75;tur.add(d);
+  const eye=new THREE.Mesh(new THREE.CircleGeometry(3,14),RED);eye.position.set(0,2.6,-6.6);eye.rotation.y=Math.PI;tur.add(eye);   // EL red eye
+  [-2,2].forEach(o=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(1,1,14,8),GUN);b.rotation.x=Math.PI/2;b.position.set(o,2.6,-11);tur.add(b);});
+  tur.userData={ang:0,arc:120*Math.PI/180};guns.push(tur);});
+// ---------- 8 SMALL BALLISTIC PD x2 on the rear (engine) box, near the rear corners, facing back (arc 180)
+[-1,1].forEach(g=>{const m=new THREE.Group();m.position.copy(W(100+g*40,203,48));wpn.add(m);
+  const well=new THREE.Mesh(new THREE.CylinderGeometry(7.5,7.5,3,22),DARK);m.add(well);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(8.4,1.1,6,22,Math.PI),ORG);lip.rotation.x=Math.PI/2;lip.rotation.z=Math.PI;lip.position.y=1.5;m.add(lip);   // lip on the aft side
+  const ped=new THREE.Mesh(new THREE.CylinderGeometry(4,5,3,16),ARM_D);ped.position.y=1.5;m.add(ped);
+  const tur=new THREE.Group();tur.position.y=3;m.add(tur);
+  const d=new THREE.Mesh(new THREE.SphereGeometry(4.6,14,8,0,Math.PI*2,0,Math.PI/2),GUN);tur.add(d);
+  [-1.4,1.4].forEach(o=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,10,8),GUN);b.rotation.x=Math.PI/2;b.position.set(o,2,-6.5);tur.add(b);});
+  tur.userData={ang:Math.PI,arc:Math.PI};guns.push(tur);if(g>0)tag('8',m,new THREE.Vector3(8,8,0));});
+// ---------- 3 QUAD RAILGUN BAY under the nose (large ballistic, drawn below the hull, 10 deg)
+const bay=new THREE.Group();bay.position.copy(W(100,76,-32));hull.add(bay);
+const bayB=new THREE.Mesh(new THREE.BoxGeometry(40,14,64),ARM_D);bayB.position.z=6;bay.add(bayB);
+const bayL=new THREE.Mesh(new THREE.BoxGeometry(44,2,66),ORG);bayL.position.set(0,-7.4,6);bay.add(bayL);
+const rg=new THREE.Group();rg.position.set(0,-2,-24);bay.add(rg);
+const breech=new THREE.Mesh(new THREE.BoxGeometry(30,10,16),RAIL);breech.position.z=6;rg.add(breech);
+[[-5.5,-2.5],[5.5,-2.5],[-5.5,2.5],[5.5,2.5]].forEach(([x,y])=>{const b=new THREE.Mesh(new THREE.BoxGeometry(5,3.6,56),RAIL);b.position.set(x,y,-26);rg.add(b);
+  const c=new THREE.Mesh(new THREE.BoxGeometry(5.6,4.2,2.4),ORG);c.position.set(x,y,-52);rg.add(c);});
+[-14,-30].forEach(z=>{const cl=new THREE.Mesh(new THREE.BoxGeometry(24,11,3),GREY_D);cl.position.set(0,0,z);rg.add(cl);});   // rail clamps
+rg.userData={ang:0,arc:10*Math.PI/180};guns.push(rg);
+// ---------- 7 MAIN DRIVE: grey ribbed collar (EL) + bell nozzle, on the rear box's stern face
+const eng=new THREE.Group();eng.position.copy(W(100,214,6));hull.add(eng);
+const neck=new THREE.Mesh(new THREE.CylinderGeometry(20,20,14,32),GREY_D);neck.rotation.x=Math.PI/2;neck.position.z=7;eng.add(neck);
+[4,8,12].forEach(z=>{const rb=new THREE.Mesh(new THREE.TorusGeometry(21.6,1.8,8,36),GREY);rb.position.z=z;eng.add(rb);});
+const bellP=[[10,0],[12,4],[16,9],[21,14],[25,18],[26,19]].map(([r,z])=>new THREE.Vector2(r,z));const bgm=new THREE.LatheGeometry(bellP,40);bgm.rotateX(-Math.PI/2);bgm.scale(1,1,-1);
+const bell=new THREE.Mesh(bgm,GREY.clone());bell.material.side=THREE.DoubleSide;bell.position.z=14;eng.add(bell);
+const lip=new THREE.Mesh(new THREE.TorusGeometry(26,1.3,6,40),ORG);lip.position.z=33;eng.add(lip);
+for(let k=0;k<20;k++){const a=k/20*Math.PI*2;const pts=bellP.slice(1).map(v=>new THREE.Vector3(Math.cos(a)*(v.x-0.6),Math.sin(a)*(v.x-0.6),14+v.y));eng.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),8,0.35,4),GREY_D));}
+const throat=new THREE.Mesh(new THREE.CircleGeometry(10,24),new THREE.MeshBasicMaterial({color:0xfff2dc}));throat.position.z=14.3;eng.add(throat);
+// ---------- 8 SIDE THRUSTER PODS on swivel hubs (vector for strafing)
+const pods=[];
+function flame(r,len,col){const m=new THREE.Mesh(new THREE.ConeGeometry(r,len,20,1,true),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.55,depthWrite:false,side:THREE.DoubleSide}));m.rotation.x=Math.PI/2;m.position.z=len/2;const g=new THREE.Group();g.add(m);g.userData.len=len;return g;}
+[-1,1].forEach(g=>{const piv=W(100+g*(bw+10),192,4);
+  const pyl=box(14,9,18,ARM_D,W(100+g*(bw+4),192,4));                                              // fixed pylon from the box
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(4.5,4.5,16,20),GREY);hub.position.copy(piv);hull.add(hub);
+  [8,-8].forEach(y=>{const hr=new THREE.Mesh(new THREE.TorusGeometry(4.6,0.7,6,20),ORG);hr.rotation.x=Math.PI/2;hr.position.copy(piv).add(new THREE.Vector3(0,y,0));hull.add(hr);});
+  const P=new THREE.Group();P.position.copy(piv);hull.add(P);
+  const yoke=new THREE.Mesh(new THREE.BoxGeometry(8,9,14),ARM_D);yoke.position.set(g*9,0,0);P.add(yoke);
+  const prof=[[0,-24],[6,-22],[10,-16],[12,-8],[12,8],[11,12]].map(([r,z])=>new THREE.Vector2(r,z));const lg=new THREE.LatheGeometry(prof,32);lg.rotateX(Math.PI/2);
+  const nac=new THREE.Mesh(lg,ARM);nac.position.set(g*25,0,0);P.add(nac);
+  [-12,-2].forEach(z=>{const b=new THREE.Mesh(new THREE.TorusGeometry(12.2,0.8,6,28),ORG);b.position.set(g*25,0,z);P.add(b);});
+  const nz=new THREE.Group();nz.position.set(g*25,0,12);P.add(nz);
+  const can=new THREE.Mesh(new THREE.CylinderGeometry(8,9.5,8,24,1,true),GREY.clone());can.material.side=THREE.DoubleSide;can.rotation.x=Math.PI/2;can.position.z=4;nz.add(can);
+  const nl=new THREE.Mesh(new THREE.TorusGeometry(9.5,0.8,6,24),ORG);nl.position.z=8;nz.add(nl);
+  const ng=new THREE.Mesh(new THREE.CircleGeometry(7.4,20),new THREE.MeshBasicMaterial({color:0xfff2dc}));ng.position.z=1;nz.add(ng);
+  const fl=flame(7,40,0xffc890);fl.position.z=8;nz.add(fl);
+  pods.push({P,fl,g});});
+const mainFl=flame(20,90,0xffd8a8);mainFl.position.z=33;eng.add(mainFl);
+// nav lights
+[-1,1].forEach(g=>add(new THREE.Mesh(new THREE.SphereGeometry(1.8,10,8),M(g<0?0xff4a3a:0x5aff78,{emissive:g<0?0xff2010:0x20ff40})),W(100+g*(DX+1),98,2)));
+
+tag('1',mk(W(62,70,40)));tag('2',guns[1].parent.parent,new THREE.Vector3(0,16,0));tag('3',bay,new THREE.Vector3(0,-14,-50));tag('4',mk(W(158,196,30)));
+tag('5',t3,new THREE.Vector3(0,12,0));tag('6',eng,new THREE.Vector3(0,-30,20));tag('7',pods[1].P,new THREE.Vector3(26,20,0));
+
+// ---------- UI
+let view='all',mode='idle';
+document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{view=b.dataset.v;wpn.visible=view==='all';
+  document.querySelectorAll('#view button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===view));});
+document.querySelectorAll('#fly button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('#fly button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===mode));});
+function camTo(p){cam.position.copy(p);ctl.target.set(0,10,0);ctl.update();}
+document.getElementById('c-top').onclick=()=>camTo(new THREE.Vector3(0,520,0.1));
+document.getElementById('c-side').onclick=()=>camTo(new THREE.Vector3(420,40,0));
+document.getElementById('c-34').onclick=()=>camTo(new THREE.Vector3(-270,220,-270));
+document.getElementById('c-low').onclick=()=>camTo(new THREE.Vector3(-150,-50,-340));
+document.getElementById('c-rear').onclick=()=>camTo(new THREE.Vector3(200,160,360));
+camTo(new THREE.Vector3(-270,220,-270));
+const tg=document.getElementById('tags'),sw=document.getElementById('sweep'),sp=document.getElementById('spin');
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();}
+addEventListener('resize',size);size();
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)sw.checked=false;
+const v=new THREE.Vector3();const t0=performance.now();const cur={main:0.15,L:0.15,R:0.15,swL:0,swR:0};
+// thruster logic per manoeuvre: main + both pods forward; strafe = both pods swing (vector) to the far side; turn = differential pods
+const TGT={idle:{main:.15,L:.15,R:.15,sw:0},fwd:{main:1,L:1,R:1,sw:0},sl:{main:.2,L:.9,R:.9,sw:1},sr:{main:.2,L:.9,R:.9,sw:-1},tl:{main:.3,L:.15,R:1,sw:0},tr:{main:.3,L:1,R:.15,sw:0}};
+function loop(now){const t=(now-t0)/1000;const T=TGT[mode];
+  for(const k of ['main','L','R'])cur[k]+=(T[k]-cur[k])*0.08;cur.swL+=(T.sw-cur.swL)*0.08;
+  const fl=(g,a,k=0)=>{const s=0.2+0.8*a*(1+0.08*Math.sin(now*0.05+k));g.scale.set(0.6+0.4*a,0.6+0.4*a,s);};
+  fl(mainFl,cur.main);pods.forEach(p=>{fl(p.fl,p.g<0?cur.L:cur.R,p.g*2);p.P.rotation.y=cur.swL*0.26;});
+  guns.forEach((g,i)=>{g.rotation.y=g.userData.ang+(sw.checked?Math.sin(t*1.0+i*0.9)*g.userData.arc/2:0);});
+  if(sp.checked)S.rotation.y+=.004;
+  ctl.update();R.render(S,cam);
+  tags.forEach(({d,obj,off})=>{let p=obj,vis_=tg.checked;while(p){if(!p.visible)vis_=false;p=p.parent;}d.hidden=!vis_;if(!vis_)return;
+    obj.getWorldPosition(v);v.add(off||new THREE.Vector3());v.project(cam);d.style.left=((v.x+1)/2*stage.clientWidth)+'px';d.style.top=((1-v.y)/2*stage.clientHeight)+'px';});
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>

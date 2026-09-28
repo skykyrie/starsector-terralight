@@ -1,0 +1,1 @@
+package com.thoughtworks.xstream; public class XStream { public void alias(String a, Class c){} public void aliasAttribute(Class c,String a,String b){} public void omitField(Class c,String f){} public void useAttributeFor(Class c,String f){} public void aliasField(String a,Class c,String f){} }

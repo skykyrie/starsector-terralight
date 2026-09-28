@@ -1,0 +1,229 @@
+<title>Selene 3D Block-out</title>
+<style>
+:root{--bg:#110f13;--panel:#18151b;--line:#2e2833;--ink:#e6e9ee;--mute:#99a1ad;--vio:#e0a07c;--amber:#ffb24a;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+header{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;border-bottom:1px solid var(--line)}
+h1{font:600 18px "Chakra Petch","IBM Plex Sans",sans-serif;letter-spacing:.04em;margin:0}
+header p{margin:0;color:var(--mute);font-size:13px}
+main{flex:1;display:flex;min-height:0}
+#stage{flex:1;position:relative;min-width:0;min-height:320px}
+#stage canvas{display:block;width:100%;height:100%}
+.tag{position:absolute;transform:translate(-50%,-50%);font:600 11px "IBM Plex Mono",monospace;background:rgba(15,13,20,.85);border:1px solid var(--amber);color:var(--amber);border-radius:10px;padding:1px 6px;pointer-events:none;white-space:nowrap}
+aside{width:300px;background:var(--panel);border-left:1px solid var(--line);padding:14px 16px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.grp{display:flex;flex-direction:column;gap:6px}
+.lbl{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button,.btn{font:inherit;font-size:13px;background:#201b24;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--vio);color:#2a1406;border-color:var(--vio)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+label.row{display:flex;gap:8px;align-items:center;cursor:pointer}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+ol li span{color:var(--mute);font-size:12px;display:block}
+.note{color:var(--mute);font-size:12px}
+@media (max-width:760px){main{flex-direction:column}aside{width:auto;border-left:0;border-top:1px solid var(--line)}#stage{height:62vh;flex:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>SELENE · 3D block-out</h1><p>Terra Light fast carrier cruiser (2 fighter bays, second fastest in the mod, fragile). Drag to orbit, scroll to zoom, right-drag to pan. Numbers match the parts list.</p></header>
+<main>
+<div id="stage"></div>
+<aside>
+  <div class="grp"><div class="lbl">Show</div>
+    <div class="seg" id="view">
+      <button aria-pressed="true" data-v="all">Whole ship</button>
+      <button aria-pressed="false" data-v="hull">Hull only</button>
+    </div></div>
+  <div class="grp"><div class="lbl">Camera</div>
+    <div class="seg"><button class="btn" id="c-top">Top (sprite view)</button><button class="btn" id="c-side">Side</button><button class="btn" id="c-34">3/4</button><button class="btn" id="c-low">Low front</button><button class="btn" id="c-rear">Rear</button></div></div>
+  <div class="grp">
+    <label class="row"><input type="checkbox" id="tags" checked> Part numbers</label>
+    <label class="row"><input type="checkbox" id="sweep" checked> Sweep guns through their arcs</label>
+    <label class="row"><input type="checkbox" id="launch"> Launch fighters</label>
+    <label class="row"><input type="checkbox" id="spin"> Turntable</label>
+  </div>
+  <div class="grp"><div class="lbl">Parts</div>
+    <ol>
+      <li>Dome body<span>Plum armoured dome (EL purple dome) with ribs, a rose-gold equator band and shingled crown plates</span></li>
+      <li>Visors<span>Mint glass bands on the dome: front (bridge), back, and one on each side, rose-gold frames and mullions. The command room is inside the dome</span></li>
+      <li>Drive core cover<span>Armoured petal hatch on the dome crown (the EL light plate); the core sits deep inside</span></li>
+      <li>(no tower)<span>Selene keeps its command room inside the dome, behind the visors</span></li>
+      <li>Side pods ×2<span>Rounded hangar pods either side of the dome</span></li>
+      <li>Launch decks ×2<span>Short graphite decks running forward from the pods (EL green decks), each running straight into a hangar entrance in the front of its pod (armoured frame, lit bay, retracted blast door)</span></li>
+      <li>Medium composite ×2<span>Swappable, on rose-gold ringed sponsons on the pods' outer sides, 200° arc angled 20° out</span></li>
+      <li>Engine crest<span>Armoured crest arching behind the dome (EL green crest)</span></li>
+      <li>Small ballistic PD ×2<span>Sunk into the crest corners, 240° arc to the rear quarters</span></li>
+      <li>Main drives ×3<span>The big 3-nozzle drive (second fastest ship)</span></li>
+      <li>Diagonal jets ×2<span>Outer corners of the engine drive block (crest), 45° outward</span></li>
+    </ol></div>
+  <p class="note">Top-down proportions follow the 320 × 390 px sprite (1 unit = 1 px). Heights are my guesses from the Earth Light art.</p>
+</aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage');
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));stage.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0x110f13);
+const cam=new THREE.PerspectiveCamera(38,1,1,6000);
+const ctl=new THREE.OrbitControls(cam,R.domElement);ctl.enableDamping=true;
+S.add(new THREE.HemisphereLight(0xf4eefa,0x221e26,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.85);sun.position.set(-160,320,-240);S.add(sun);
+const rim=new THREE.DirectionalLight(0xffc8a8,0.3);rim.position.set(200,80,300);S.add(rim);
+const grid=new THREE.GridHelper(900,45,0x2e2833,0x1b181e);grid.position.y=-70;S.add(grid);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,metalness:.5,roughness:.45},o));
+const ARM=M(0x7a6a86),ARM_L=M(0xa596b0),ARM_D=M(0x514659),DARK=M(0x1e1a22,{roughness:.8}),HANG=M(0x141216,{roughness:.9}),
+      ROSE=M(0xe0a07c,{emissive:0x3a1a08,metalness:.7,roughness:.3}),CAP=M(0xc86a94,{emissive:0x2a0a1a,metalness:.4}),
+      DECK=M(0x3e4148,{metalness:.25,roughness:.7}),DECK_D=M(0x30333a,{metalness:.25,roughness:.7}),LANE=M(0x575b63,{metalness:.25,roughness:.65}),
+      WHT=M(0xffffff,{emissive:0x777777,roughness:.6}),GLS=M(0x8ff0e0,{emissive:0x1a6a5a,metalness:.2,roughness:.15}),GLOW=M(0xf6f0ff,{emissive:0xd0b8ff}),
+      LIT=M(0xfff0c0,{emissive:0xffd070}),RACK=M(0x6f6878,{metalness:.6});
+const CX=160,W=(px,py,y=0)=>new THREE.Vector3(px-CX,y,py-245);
+const tags=[];function tag(n,obj,off){const d=document.createElement('div');d.className='tag';d.textContent=n;stage.appendChild(d);tags.push({d,obj,off:off||new THREE.Vector3()});}
+const hull=new THREE.Group(),wpn=new THREE.Group();S.add(hull);S.add(wpn);
+const add=(m,p,g=hull)=>{if(p)m.position.copy(p);g.add(m);return m;};
+const box=(w,h,d,mat,p,g)=>add(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat),p,g);
+const shp=pts=>{const s=new THREE.Shape();pts.forEach(([px,py],i)=>{const x=px-CX,z=-(py-245);i?s.lineTo(x,z):s.moveTo(x,z);});s.closePath();return s;};
+function slab(sh,y0,h,mat,g=hull,bev=1.5){const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:h,bevelEnabled:bev>0,bevelThickness:bev,bevelSize:bev,bevelSegments:3}),mat);m.rotation.x=-Math.PI/2;m.position.y=y0;g.add(m);return m;}
+function outline(cx,hwf,y0,y1,inset,n=48){const L=[],Rr=[];for(let i=0;i<=n;i++){const py=y0+(y1-y0)*i/n,h=Math.max(0.5,hwf(py)-inset);L.push([cx-h,py]);Rr.push([cx+h,py]);}return L.concat(Rr.reverse());}
+const rect=(x0,z0,x1,z1)=>{const h=new THREE.Path();h.moveTo(x0,z0);h.lineTo(x0,z1);h.lineTo(x1,z1);h.lineTo(x1,z0);h.closePath();return h;};
+
+// ---------- 1 DOME BODY: ellipsoid centre (160,262), 80 x 86, 58 tall
+const DC=W(160,262,0),DX=80,DZ=86,DH=58;
+const dome=new THREE.Mesh(new THREE.SphereGeometry(1,64,40),M(0x7a6a86,{metalness:.35,roughness:.62}));dome.scale.set(DX,DH,DZ);dome.position.copy(DC);hull.add(dome);
+const onD=(ang,lat,out=0)=>new THREE.Vector3((DX+out)*Math.cos(lat)*Math.sin(ang),(DH+out*DH/DX)*Math.sin(lat),-(DZ+out)*Math.cos(lat)*Math.cos(ang)).add(DC);
+const eq=new THREE.Mesh(new THREE.TorusGeometry(1,0.022,8,96),ROSE);eq.scale.set(DX+1.4,DZ+1.4,1);eq.rotation.x=Math.PI/2;eq.position.copy(DC).add(new THREE.Vector3(0,-2,0));hull.add(eq);
+[0.25,-0.3].forEach(l=>{const r=new THREE.Mesh(new THREE.TorusGeometry(1,0.01,6,96),DARK);r.scale.set(DX*Math.cos(l)+0.7,DZ*Math.cos(l)+0.7,1);r.rotation.x=Math.PI/2;r.position.copy(DC).add(new THREE.Vector3(0,DH*Math.sin(l),0));hull.add(r);});
+for(let k=0;k<16;k++){const a=k/16*Math.PI*2;if(Math.abs(Math.sin(a/2))<0.2)continue;                        // meridian ribs (none under the sensor cap)
+  const pts=[];for(let i=0;i<=14;i++)pts.push(onD(a,-0.4+1.35*i/14,0.7));hull.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,0.9,6),ARM_L));}
+const TL0=M(0x7f6f8b,{metalness:.25,roughness:.75}),TL1=M(0x9a8ba6,{metalness:.25,roughness:.75});
+for(let row=0;row<2;row++){const lat=0.55+row*0.22;for(let k=0;k<12;k++){const a=k/12*Math.PI*2+row*0.26;if(Math.abs(Math.sin(a/2))<0.3)continue;      // shingled crown plates
+  const tile=new THREE.Mesh(new THREE.BoxGeometry(18-row*5,2,14-row*3),row?TL1:TL0);tile.position.copy(onD(a,lat,1));tile.lookAt(onD(a,lat,20));tile.rotateX(Math.PI/2);hull.add(tile);}}
+// crew windows under the equator
+for(let a=0.9;a<=2.5;a+=0.14)[-1,1].forEach(g=>{const w=box(2.6,3.6,2,LIT,onD(g*a,-0.14,0.5));w.lookAt(onD(g*a,-0.14,10));});
+// ---------- 2 VISORS: front, back and side glass bands wrapped round the dome (bridge + observation decks), rose-gold frames
+const visors=[];const VL=0.45,VT=0.15;
+[[Math.PI*1.5,1.0],[Math.PI*0.5,0.8],[0,0.7],[Math.PI,0.7]].forEach(([ph,len],i)=>{        // front, back, left, right
+  const g=new THREE.SphereGeometry(1,48,6,ph-len/2,len,Math.PI/2-VL-VT/2,VT);
+  const v=new THREE.Mesh(g,GLS);v.scale.set(DX+0.9,DH+0.9,DZ+0.9);v.position.copy(DC);hull.add(v);visors.push(v);
+  [-1,1].forEach(e=>{const fg=new THREE.SphereGeometry(1,48,2,ph-len/2-0.03,len+0.06,Math.PI/2-VL+e*(VT/2+0.012)-0.012,0.024);
+    const f=new THREE.Mesh(fg,ROSE);f.scale.set(DX+1.6,DH+1.6,DZ+1.6);f.position.copy(DC);hull.add(f);});
+  const n=Math.round(len/0.14);for(let k=1;k<n;k++){const a=ph-len/2+len*k/n;                  // mullions
+    const m=new THREE.Mesh(new THREE.BoxGeometry(1,7,1.2),DARK);const x=-(DX+1.4)*Math.cos(a)*Math.cos(VL),z=(DZ+1.4)*Math.sin(a)*Math.cos(VL),y=(DH+1.4)*Math.sin(VL);
+    m.position.copy(DC).add(new THREE.Vector3(x,y,z));m.lookAt(DC.clone().add(new THREE.Vector3(x*2,y*0.4,z*2)));hull.add(m);}});
+// ---------- 3 DRIVE CORE COVER on the crown (the EL light plate)
+const coreG=new THREE.Group();coreG.position.copy(DC).add(new THREE.Vector3(0,DH-1.5,-14));coreG.rotation.x=0.18;hull.add(coreG);
+const cb=new THREE.Mesh(new THREE.CylinderGeometry(15,17,4,8),ARM_D);cb.position.y=1;coreG.add(cb);
+for(let k=0;k<8;k++){const a=k/8*Math.PI*2+Math.PI/8;const p=new THREE.Mesh(new THREE.BoxGeometry(8,2.2,10),ARM_L);p.position.set(Math.sin(a)*8,3.8,Math.cos(a)*8);p.rotation.y=a;p.rotateX(-0.18);coreG.add(p);
+  const s=new THREE.Mesh(new THREE.BoxGeometry(0.9,1,7),ROSE);s.position.set(Math.sin(a+Math.PI/8)*9,3.4,Math.cos(a+Math.PI/8)*9);s.rotation.y=a+Math.PI/8;coreG.add(s);}
+const ccap=new THREE.Mesh(new THREE.CylinderGeometry(3.4,3.4,3,8),ROSE);ccap.position.y=5;coreG.add(ccap);
+// ---------- 5 SIDE PODS + 6 LAUNCH DECKS (with one hangar ramp each)
+const PODS=[60,260],ramps=[],pods=[];
+const podHW=py=>py<233?30*Math.sqrt(Math.max(0,1-((233-py)/18)**2)):py>297?30*Math.sqrt(Math.max(0,1-((py-297)/18)**2)):30;
+const deckHW=py=>py<134?22*Math.sqrt(Math.max(0,1-((134-py)/22)**2)):22;
+PODS.forEach((px,i)=>{const g=i?1:-1;
+  slab(shp(outline(px,podHW,215,315,0)),-18,34,ARM,hull,4);                                             // pod
+  slab(shp(outline(px,podHW,221,309,6)),18,2,ARM_L,hull,1.5);                                           // pod top plate
+  slab(shp(outline(px,podHW,224,306,14)),-26,8,ARM_D,hull,2);                                           // pod keel tier
+  slab(shp(outline(px,deckHW,112,222,0)),2,5,ARM_L,hull,1.2);                                          // deck rim
+  const deck=slab(shp(outline(px,deckHW,116,222,4)),7,1.4,DECK,hull,0);                                 // deck surface runs into the pod
+  slab(shp(outline(px,py=>deckHW(py)-6,120,218,0)),-10,12,ARM_D,hull,2);                                // deck keel
+  box(12,0.2,100,LANE,W(px,168,8.5));                                                                   // lane surface
+  [-1,1].forEach(e=>{box(0.8,0.3,100,ROSE,W(px+e*7.5,168,8.6));});                                       // lane edge lines
+  for(let py=118;py<214;py+=10)box(1,0.3,4,WHT,W(px,py,8.6));                                            // dashed centreline
+  for(let py=124;py<216;py+=16)[-1,1].forEach(e=>box(1.2,0.8,1.6,LIT,W(px+e*(deckHW(py)-3),py,8.8)));    // edge lights
+  box(2,0.3,60,DARK,W(px,160,8.65));box(5,1.2,3.2,ARM_L,W(px,196,9.2));                                  // catapult slot + shuttle
+  [-1,1].forEach(e=>[0,1,2].forEach(k=>{const c=box(9,0.3,1.6,WHT,W(px+e*5,134+k*6,8.65));c.rotation.y=e*0.55;}));  // chevrons
+  const tube=new THREE.CylinderGeometry(4,4,86,14);tube.rotateX(Math.PI/2);[-1,1].forEach(e=>{const t=new THREE.Mesh(tube,ARM_L);t.scale.set(1.2,1,1);t.position.copy(W(px+e*23,170,4));hull.add(t);});   // edge fairings
+  // hangar entrance in the pod's front face at deck level: armoured frame, dark bay, lit interior, retracted blast-door slats
+  const rg=new THREE.Group();rg.position.copy(W(px,210,0));hull.add(rg);     // portal hood at the deck's end, grown out of the pod front
+  const HW_=22,HH=26,HD=18;
+  const roof=new THREE.Mesh(new THREE.BoxGeometry(2*HW_+6,5,HD),ARM);roof.position.set(0,8+HH-2.5,0);rg.add(roof);
+  const roofL=new THREE.Mesh(new THREE.BoxGeometry(2*HW_+2,1.4,HD-4),ARM_L);roofL.position.set(0,8+HH+0.7,1);rg.add(roofL);
+  [-1,1].forEach(e=>{const post=new THREE.Mesh(new THREE.BoxGeometry(6,HH,HD),ARM);post.position.set(e*(HW_),8+HH/2-2.5,0);rg.add(post);
+    const cham=new THREE.Mesh(new THREE.BoxGeometry(6,6,6),ARM_D);cham.position.set(e*(HW_-4),8+HH-7,-HD/2+2);cham.rotation.z=Math.PI/4;rg.add(cham);
+    const l=new THREE.Mesh(new THREE.BoxGeometry(1.2,10,1),LIT);l.position.set(e*(HW_-3.2),14,-HD/2-0.2);rg.add(l);});
+  const bay=new THREE.Mesh(new THREE.BoxGeometry(2*HW_-6,HH-6,HD),HANG);bay.position.set(0,8+(HH-6)/2,1);rg.add(bay);
+  const back=new THREE.Mesh(new THREE.PlaneGeometry(2*HW_-8,HH-10),LIT);back.position.set(0,8+(HH-6)/2,-HD/2+HD-0.2);back.rotation.y=Math.PI;rg.add(back);
+  const glow=new THREE.Mesh(new THREE.PlaneGeometry(2*HW_-8,HH-8),M(0x2a2228,{emissive:0x4a3018}));glow.position.set(0,8+(HH-6)/2,-HD/2+0.8);rg.add(glow);
+  const lintel=new THREE.Mesh(new THREE.BoxGeometry(2*HW_+8,3,3),ROSE);lintel.position.set(0,8+HH-4,-HD/2-1);rg.add(lintel);
+  for(let k=0;k<3;k++){const sl=new THREE.Mesh(new THREE.BoxGeometry(2*HW_-8,1,1.4),ARM_L);sl.position.set(0,8+HH-8-k*1.6,-HD/2+1.5);rg.add(sl);}   // retracted blast-door slats
+  for(let k=-2;k<=2;k++){const hz=new THREE.Mesh(new THREE.BoxGeometry(5,0.3,2),k%2?WHT:ROSE);hz.position.set(k*7,8.8,-HD/2-3);rg.add(hz);}          // threshold stripes
+  ramps.push(rg);
+  // sponson on the pod's outer side for the composite mount
+  const sp=new THREE.Mesh(new THREE.CylinderGeometry(18,12,24,28,1,false,g<0?Math.PI:0,Math.PI),ARM);sp.position.copy(W(i?290:30,262,2));hull.add(sp);
+  pods.push(sp);});
+// ---------- 7 MEDIUM COMPOSITE x2 on rose-gold ringed sponsons (24/296, 262)
+const comp=[];[[24,262,20],[296,262,-20]].forEach(([px,py,ang])=>{const m=new THREE.Group();m.position.copy(W(px,py,15));wpn.add(m);
+  const pad=new THREE.Mesh(new THREE.CylinderGeometry(15,16,2.4,32),ARM_D);pad.position.y=1.2;m.add(pad);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(14,1.6,8,32),ROSE);ring.rotation.x=Math.PI/2;ring.position.y=2.6;m.add(ring);
+  const tur=new THREE.Group();tur.position.y=2.6;m.add(tur);
+  const d=new THREE.Mesh(new THREE.SphereGeometry(9,18,10,0,Math.PI*2,0,Math.PI/2),RACK);d.scale.y=0.7;tur.add(d);
+  const b=new THREE.Mesh(new THREE.CylinderGeometry(1.6,1.8,20,10),ARM_D);b.rotation.x=Math.PI/2;b.position.set(-3,3,-14);tur.add(b);
+  const r=new THREE.Mesh(new THREE.BoxGeometry(6,5,10),RACK);r.position.set(4.5,3,-6);tur.add(r);
+  tur.userData={ang:ang*Math.PI/180,arc:200*Math.PI/180};comp.push(tur);});
+// ---------- 8 ENGINE CREST arching behind the dome
+const crestHW=py=>80*Math.sqrt(Math.max(0,1-((py-340)/42)**2));
+slab(shp(outline(160,py=>Math.min(80,crestHW(py)*1.02),305,356,0)),-16,34,ARM,hull,4);
+slab(shp(outline(160,py=>Math.min(74,crestHW(py)),309,352,6)),18,2,ARM_L,hull,1.5);
+for(let k=-3;k<=3;k++)box(1.4,1,34,DARK,W(160+k*18,332,20.3));
+// ---------- 9 SMALL BALLISTIC PD x2 sunk into the crest corners (90/230, 330), 240 deg arc to the rear quarters
+const pd=[];[[90,330,120],[230,330,-120]].forEach(([px,py,ang],i)=>{const m=new THREE.Group();m.position.copy(W(px,py,19));wpn.add(m);
+  const well=new THREE.Mesh(new THREE.CylinderGeometry(7.5,7.5,2,22),DARK);m.add(well);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(8.6,1.3,6,20,Math.PI),ROSE);lip.rotation.x=Math.PI/2;lip.rotation.z=i?0:Math.PI;lip.position.y=1.4;m.add(lip);
+  const tur=new THREE.Group();tur.position.y=1;m.add(tur);
+  const dm=new THREE.Mesh(new THREE.SphereGeometry(5,16,10,0,Math.PI*2,0,Math.PI/2),ARM_L);tur.add(dm);
+  [-1.6,1.6].forEach(o=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(0.9,0.9,11,8),ARM_D);b.rotation.x=Math.PI/2;b.position.set(o,2.2,-7);tur.add(b);});
+  tur.userData={ang:ang*Math.PI/180,arc:240*Math.PI/180};pd.push(tur);});
+// ---------- 10 MAIN DRIVES x3 (big nozzles on the crest's stern face)
+const engs=[];[[120,352,14],[160,356,17],[200,352,14]].forEach(([ex,ey,r])=>{const e=new THREE.Group();e.position.copy(W(ex,ey,2));hull.add(e);
+  const can=new THREE.Mesh(new THREE.CylinderGeometry(r,r+3,18,28,1,true),ARM_D.clone());can.material.side=THREE.DoubleSide;can.rotation.x=Math.PI/2;can.position.z=9;e.add(can);
+  const col=new THREE.Mesh(new THREE.TorusGeometry(r+1,2,8,28),ARM_L);col.position.z=1;e.add(col);
+  const tip=new THREE.Mesh(new THREE.TorusGeometry(r+2.6,1,6,28),ROSE);tip.position.z=18;e.add(tip);
+  const gl=new THREE.Mesh(new THREE.CircleGeometry(r-1,28),GLOW);gl.position.z=6;e.add(gl);engs.push(e);});
+// ---------- 11 DIAGONAL JETS on the crest corners
+const jets=[];[-1,1].forEach(g=>{const j=new THREE.Group();j.position.copy(W(160+g*77,350,2));j.rotation.y=g*Math.PI/4;hull.add(j);
+  const can=new THREE.Mesh(new THREE.CylinderGeometry(4.6,6,14,16,1,true),ARM_D.clone());can.material.side=THREE.DoubleSide;can.rotation.x=Math.PI/2;j.add(can);
+  const cw=new THREE.Mesh(new THREE.TorusGeometry(6.2,1.1,6,16),ARM_L);cw.position.z=-5;j.add(cw);
+  const n=new THREE.Mesh(new THREE.CircleGeometry(4.6,16),GLOW);n.position.z=7;j.add(n);jets.push(j);});
+// nav lights on the deck tips
+[[60,-1],[260,1]].forEach(([x,g])=>add(new THREE.Mesh(new THREE.SphereGeometry(2,10,8),M(g<0?0xff4a3a:0x5aff78,{emissive:g<0?0xff2010:0x20ff40})),W(x,114,9)));
+// fighters for the launch preview (one per deck)
+const ftr=[];PODS.forEach((px,i)=>{const f=new THREE.Group();wpn.add(f);
+  const cg=new THREE.ConeGeometry(5,18,4);cg.rotateY(Math.PI/4);cg.rotateX(-Math.PI/2);cg.scale(1,0.45,1);f.add(new THREE.Mesh(cg,ARM_L));
+  const w=new THREE.Mesh(new THREE.BoxGeometry(16,1,6),ROSE);w.position.z=3;f.add(w);f.userData={bx:px-CX};f.visible=false;ftr.push(f);});
+
+tag('1',dome,new THREE.Vector3(-50,40,20));tag('2',visors[0],new THREE.Vector3(0,34,-80));tag('3',coreG,new THREE.Vector3(0,12,0));
+tag('5',pods[0],new THREE.Vector3(30,24,20));tag('6',ramps[0],new THREE.Vector3(0,30,0));tag('7',comp[1],new THREE.Vector3(0,16,0));
+tag('8',engs[1],new THREE.Vector3(0,28,-14));tag('9',pd[1],new THREE.Vector3(8,10,0));tag('10',engs[2],new THREE.Vector3(0,-22,10));tag('11',jets[1],new THREE.Vector3(12,-8,0));
+
+// ---------- UI
+let view='all';
+document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{view=b.dataset.v;wpn.visible=view==='all';
+  document.querySelectorAll('#view button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===view));});
+function camTo(p){cam.position.copy(p);ctl.target.set(0,0,0);ctl.update();}
+document.getElementById('c-top').onclick=()=>camTo(new THREE.Vector3(0,720,0.1));
+document.getElementById('c-side').onclick=()=>camTo(new THREE.Vector3(620,40,0));
+document.getElementById('c-34').onclick=()=>camTo(new THREE.Vector3(-400,300,-400));
+document.getElementById('c-low').onclick=()=>camTo(new THREE.Vector3(-220,-60,-500));
+document.getElementById('c-rear').onclick=()=>camTo(new THREE.Vector3(260,200,520));
+camTo(new THREE.Vector3(-400,300,-400));
+const tg=document.getElementById('tags'),sw=document.getElementById('sweep'),sp=document.getElementById('spin'),ln=document.getElementById('launch');
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();}
+addEventListener('resize',size);size();
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)sw.checked=false;
+const v=new THREE.Vector3();const t0=performance.now();let lt=0,last=performance.now();
+function loop(now){const t=(now-t0)/1000,dt=Math.min(0.05,(now-last)/1000);last=now;
+  comp.forEach((m,i)=>{m.rotation.y=m.userData.ang+(sw.checked?Math.sin(t*0.7+i*1.4)*m.userData.arc/2:0);});
+  pd.forEach((m,i)=>{m.rotation.y=m.userData.ang+(sw.checked?Math.sin(t*1.1+i)*m.userData.arc/2:0);});
+  lt=ln.checked?lt+dt:0;
+  ftr.forEach((f,i)=>{const T=((lt-i*0.8)%3.6+3.6)%3.6;f.visible=ln.checked&&lt>i*0.8;const bz=212-245;
+    let z,y;if(T<0.6){z=bz+6-T*10;y=10;}else{const u=T-0.6;z=bz-u*u*120;y=10+Math.max(0,u-0.8)*u*26;}
+    f.position.set(f.userData.bx,y,z);});
+  if(sp.checked)S.rotation.y+=.004;
+  ctl.update();R.render(S,cam);
+  tags.forEach(({d,obj,off})=>{let p=obj,vis_=tg.checked;while(p){if(!p.visible)vis_=false;p=p.parent;}d.hidden=!vis_;if(!vis_)return;
+    obj.getWorldPosition(v);v.add(off);v.project(cam);d.style.left=((v.x+1)/2*stage.clientWidth)+'px';d.style.top=((1-v.y)/2*stage.clientHeight)+'px';});
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>

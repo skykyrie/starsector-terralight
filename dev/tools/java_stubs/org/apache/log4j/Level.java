@@ -1,0 +1,1 @@
+package org.apache.log4j; public class Level { public static Level INFO, DEBUG, WARN, ERROR, ALL, OFF; }
