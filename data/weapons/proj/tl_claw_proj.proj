@@ -1,0 +1,68 @@
+{
+  "id": "tl_claw_proj",
+  "specClass": "missile",
+  "missileType": "MISSILE",
+  "sprite": "graphics/missiles/terralight/tl_claw.png",
+  "size": [
+    32,
+    40
+  ],
+  "center": [
+    16,
+    20
+  ],
+  "collisionRadius": 18,
+  "collisionClass": "MISSILE_NO_FF",
+  "explosionColor": [
+    255,
+    200,
+    60,
+    255
+  ],
+  "explosionRadius": 90,
+  "flameoutTime": 1,
+  "armingTime": 0.3,
+  "noEngineGlowTime": 0.1,
+  "fadeTime": 0.5,
+  "engineSpec": {
+    "turnAcc": 480,
+    "turnRate": 160,
+    "acc": 900,
+    "dec": 450.0
+  },
+  "engineSlots": [
+    {
+      "id": "ES1",
+      "loc": [
+        -20,
+        0
+      ],
+      "style": "CUSTOM",
+      "styleSpec": {
+        "mode": "QUAD_STRIP",
+        "engineColor": [
+          255,
+          200,
+          60,
+          255
+        ],
+        "contrailDuration": 1,
+        "contrailWidthMult": 1,
+        "contrailWidthAddedFractionAtEnd": 2,
+        "contrailMinSeg": 5,
+        "contrailMaxSpeedMult": 0.5,
+        "contrailAngularVelocityMult": 0.5,
+        "contrailColor": [
+          255,
+          200,
+          60,
+          60
+        ],
+        "type": "GLOW"
+      },
+      "width": 8,
+      "length": 26,
+      "angle": 180.0
+    }
+  ]
+}

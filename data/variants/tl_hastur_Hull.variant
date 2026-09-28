@@ -1,0 +1,30 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_hastur",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_hastur_Hull",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "tl_hastur_beam",
+        "WS 002": "tl_hastur_beam",
+        "WS 003": "tl_hastur_beam",
+        "WS 004": "tl_hastur_beam"
+      }
+    }
+  ],
+  "wings": [],
+  "modules": [
+    {
+      "MODULE_COMMAND": "tl_hastur_bridge_Hull"
+    }
+  ]
+}

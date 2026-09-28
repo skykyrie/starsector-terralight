@@ -1,0 +1,55 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 0,
+  "fluxVents": 35,
+  "goalVariant": true,
+  "hullId": "tl_artemis",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "expanded_deck_crew",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "fluxdistributor",
+    "fluxcoil",
+    "autorepair",
+    "pointdefenseai"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_artemis_standard",
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "pdlaser",
+        "WS 002": "pdlaser",
+        "WS 003": "pdlaser",
+        "WS 004": "pdlaser",
+        "WS 005": "pdlaser",
+        "WS 006": "pdlaser",
+        "WS 007": "pdlaser",
+        "WS 008": "pdlaser"
+      }
+    }
+  ],
+  "wings": [
+    "broadsword_wing",
+    "broadsword_wing",
+    "talon_wing",
+    "talon_wing",
+    "wasp_wing",
+    "wasp_wing",
+    "dagger_wing",
+    "dagger_wing"
+  ]
+}

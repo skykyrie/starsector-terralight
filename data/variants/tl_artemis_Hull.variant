@@ -1,0 +1,14 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_artemis",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_artemis_Hull",
+  "weaponGroups": [],
+  "wings": []
+}

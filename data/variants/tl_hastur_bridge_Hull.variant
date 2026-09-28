@@ -1,0 +1,14 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_hastur_bridge",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_hastur_bridge_Hull",
+  "weaponGroups": [],
+  "wings": []
+}

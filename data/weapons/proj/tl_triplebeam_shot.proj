@@ -1,0 +1,25 @@
+{
+  "id": "tl_triplebeam_shot",
+  "specClass": "projectile",
+  "spawnType": "BALLISTIC_AS_BEAM",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "length": 150.0,
+  "width": 20.0,
+  "fadeTime": 0.3,
+  "fringeColor": [
+    255,
+    70,
+    170,
+    255
+  ],
+  "coreColor": [
+    255,
+    240,
+    250,
+    255
+  ],
+  "textureType": "SMOOTH",
+  "textureScrollSpeed": -256.0,
+  "pixelsPerTexel": 1.0
+}

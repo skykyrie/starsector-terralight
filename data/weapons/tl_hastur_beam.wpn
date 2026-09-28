@@ -1,0 +1,53 @@
+{
+  "id": "tl_hastur_beam",
+  "specClass": "projectile",
+  "type": "ENERGY",
+  "size": "MEDIUM",
+  "displayArcRadius": 700,
+  "turretSprite": "graphics/weapons/terralight/tl_hastur_beam_turret.png",
+  "hardpointSprite": "graphics/weapons/terralight/tl_hastur_beam_turret.png",
+  "turretOffsets": [
+    36,
+    -4,
+    36,
+    4
+  ],
+  "turretAngleOffsets": [
+    0,
+    0
+  ],
+  "hardpointOffsets": [
+    36,
+    -4,
+    36,
+    4
+  ],
+  "hardpointAngleOffsets": [
+    0,
+    0
+  ],
+  "barrelMode": "LINKED",
+  "animationType": "MUZZLE_FLASH",
+  "glowColor": [
+    255,
+    90,
+    190,
+    255
+  ],
+  "muzzleFlashSpec": {
+    "length": 30.0,
+    "spread": 8.0,
+    "particleSizeMin": 10.0,
+    "particleSizeRange": 10.0,
+    "particleDuration": 0.12,
+    "particleCount": 8,
+    "particleColor": [
+      255,
+      130,
+      210,
+      255
+    ]
+  },
+  "projectileSpecId": "tl_hastur_shot",
+  "fireSoundTwo": "pulse_laser_fire"
+}

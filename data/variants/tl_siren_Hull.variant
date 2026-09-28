@@ -1,0 +1,14 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_siren",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_siren_Hull",
+  "weaponGroups": [],
+  "wings": []
+}

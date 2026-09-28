@@ -1,0 +1,59 @@
+{
+  "id": "tl_triplebeam",
+  "specClass": "projectile",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "displayArcRadius": 900,
+  "turretSprite": "graphics/weapons/terralight/tl_triplebeam_turret.png",
+  "hardpointSprite": "graphics/weapons/terralight/tl_triplebeam_turret.png",
+  "turretOffsets": [
+    54,
+    0,
+    46,
+    0,
+    38,
+    0
+  ],
+  "turretAngleOffsets": [
+    0,
+    0,
+    0
+  ],
+  "hardpointOffsets": [
+    54,
+    0,
+    46,
+    0,
+    38,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0,
+    0,
+    0
+  ],
+  "barrelMode": "LINKED",
+  "animationType": "MUZZLE_FLASH",
+  "glowColor": [
+    255,
+    90,
+    190,
+    255
+  ],
+  "muzzleFlashSpec": {
+    "length": 45.0,
+    "spread": 10.0,
+    "particleSizeMin": 14.0,
+    "particleSizeRange": 16.0,
+    "particleDuration": 0.15,
+    "particleCount": 12,
+    "particleColor": [
+      255,
+      120,
+      200,
+      255
+    ]
+  },
+  "projectileSpecId": "tl_triplebeam_shot",
+  "fireSoundTwo": "pulse_laser_fire"
+}

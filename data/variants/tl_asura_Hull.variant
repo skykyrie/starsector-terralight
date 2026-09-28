@@ -1,0 +1,23 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_asura",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_asura_Hull",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "tl_quadrail",
+        "UH 001": "tl_quadrail_twin"
+      }
+    }
+  ],
+  "wings": []
+}

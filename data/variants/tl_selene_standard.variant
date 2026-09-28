@@ -1,0 +1,49 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 0,
+  "fluxVents": 23,
+  "goalVariant": true,
+  "hullId": "tl_selene",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "expanded_deck_crew",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "fluxdistributor",
+    "fluxcoil"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_selene_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "heavymauler",
+        "WS 002": "heavymauler"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 003": "vulcan",
+        "WS 004": "vulcan"
+      }
+    }
+  ],
+  "wings": [
+    "broadsword_wing",
+    "talon_wing"
+  ]
+}

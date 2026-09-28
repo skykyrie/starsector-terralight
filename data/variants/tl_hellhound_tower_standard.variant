@@ -1,0 +1,24 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 0,
+  "fluxVents": 19,
+  "goalVariant": true,
+  "hullId": "tl_hellhound_tower",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_hellhound_tower_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "UH 001": "railgun",
+        "UH 002": "railgun",
+        "UH 003": "railgun"
+      }
+    }
+  ],
+  "wings": []
+}

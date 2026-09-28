@@ -1,0 +1,99 @@
+{
+  "id": "tl_armageddon_torp",
+  "specClass": "missile",
+  "missileType": "ROCKET",
+  "sprite": "graphics/missiles/terralight/tl_armageddon_torpedo.png",
+  "size": [
+    64,
+    132
+  ],
+  "center": [
+    32,
+    66
+  ],
+  "collisionRadius": 40,
+  "collisionClass": "MISSILE_NO_FF",
+  "explosionColor": [
+    255,
+    140,
+    60,
+    255
+  ],
+  "explosionRadius": 900,
+  "flameoutTime": 1,
+  "armingTime": 1.0,
+  "noEngineGlowTime": 0.1,
+  "fadeTime": 0.5,
+  "engineSpec": {
+    "turnAcc": 36,
+    "turnRate": 12,
+    "acc": 220,
+    "dec": 110.0
+  },
+  "engineSlots": [
+    {
+      "id": "ES1",
+      "loc": [
+        -60,
+        0
+      ],
+      "style": "CUSTOM",
+      "styleSpec": {
+        "mode": "QUAD_STRIP",
+        "engineColor": [
+          255,
+          140,
+          60,
+          255
+        ],
+        "contrailDuration": 1,
+        "contrailWidthMult": 1,
+        "contrailWidthAddedFractionAtEnd": 2,
+        "contrailMinSeg": 5,
+        "contrailMaxSpeedMult": 0.5,
+        "contrailAngularVelocityMult": 0.5,
+        "contrailColor": [
+          255,
+          140,
+          60,
+          60
+        ],
+        "type": "GLOW"
+      },
+      "width": 30,
+      "length": 120,
+      "angle": 180.0
+    }
+  ],
+  "explosionSpec": {
+    "duration": 0.1,
+    "radius": 320,
+    "coreRadius": 140,
+    "collisionClass": "HITS_SHIPS_AND_ASTEROIDS",
+    "collisionClassByFighter": "HITS_SHIPS_AND_ASTEROIDS",
+    "particleSizeMin": 5.0,
+    "particleSizeRange": 3.0,
+    "particleDuration": 1,
+    "particleCount": 150,
+    "particleColor": [
+      255,
+      140,
+      60,
+      255
+    ],
+    "explosionColor": [
+      255,
+      140,
+      60,
+      255
+    ],
+    "detailedExplosionFlashColorFringe": [
+      255,
+      140,
+      60,
+      255
+    ],
+    "detailedExplosionFlashRadius": 800.0,
+    "useDetailedExplosion": true
+  }
+}

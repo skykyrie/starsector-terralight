@@ -1,0 +1,15 @@
+name,id,tier,rarity,base value,range,damage/second,damage/shot,emp,impact,turn rate,OPs,ammo,ammo/sec,reload size,type,energy/shot,energy/second,chargeup,chargedown,burst size,burst delay,min spread,max spread,spread/shot,spread decay/sec,beam speed,proj speed,launch speed,flight time,proj hitpoints,autofireAccBonus,extraArcForAI,hints,tags,groupTag,tech/manufacturer,for weapon tooltip>>,primaryRoleStr,speedStr,trackingStr,turnRateStr,accuracyStr,customPrimary,customPrimaryHL,customAncillary,customAncillaryHL,noDPSInTooltip,number
+Triple Beam Cannon,tl_triplebeam,3,0,0,1100,,220,,12,16,0,,,,ENERGY,180,,0.1,0.6,,,,,,,,1500,,,,,,,"no_drop, no_dealer, no_sell",,Terra Light,,Built-in Beam Cannon,,,,,,,,,,1
+Twin Beam Cannon,tl_hastur_beam,3,0,0,900,,130,,8,24,0,,,,ENERGY,110,,0.05,0.45,,,,,,,,1400,,,,,,,"no_drop, no_dealer, no_sell",,Terra Light,,Built-in Beam Cannon,,,,,,,,,,2
+Quad Railgun,tl_quadrail,3,0,0,1200,,250,,40,18,0,,,,KINETIC,300,,,0.8,4,0.08,,,,,,1400,,,,,,,"no_drop, no_dealer, no_sell",,Terra Light,,Built-in Kinetic,,,,,,,,,,3
+Quad Railgun (Lower),tl_quadrail_twin,3,0,0,1200,,250,,40,18,0,,,,HIGH_EXPLOSIVE,280,,,0.8,4,0.08,,,,,,1200,,,,,,,"no_drop, no_dealer, no_sell",,Terra Light,,Built-in Explosive,,,,,,,,,,4
+Armageddon Torpedo,tl_armageddon,3,0,0,2500,,5000,,100,20,0,9,0.2,3,HIGH_EXPLOSIVE,,,,1,3,0.4,,,,,,400,60,8,1500,,,STRIKE,"no_drop, no_dealer, no_sell",,Terra Light,,Built-in Torpedo,,,,,,,,,,5
+Apocalypse Warhead,tl_apocalypse,3,0,0,3000,,3000,,300,40,0,1,,,HIGH_EXPLOSIVE,,,,1,1,,,,,,,520,70,16,30000,,,SYSTEM,"no_drop, no_dealer, no_sell, hide_in_codex",,Terra Light,,One-shot Warhead,,,,,,,,,,6
+Bubble Missile Pod,tl_bubble,3,0,0,750,,250,,5,60,0,24,0.8,4,ENERGY,,,,2,4,0.1,,,,,,500,100,2.2,60,,,,"no_drop, no_dealer, no_sell",,Terra Light,,Built-in Missile,,,,,,,,,,7
+Grapple Claw,tl_claw,3,0,0,1200,,700,300,60,160,0,1,,,FRAGMENTATION,,,,1,1,,,,,,,700,250,3,200,,,SYSTEM,"no_drop, no_dealer, no_sell, hide_in_codex",,Terra Light,,Claw Strike,,,,,,,,,,8
+Neow Flare Tube,tl_neow_flare,3,0,0,400,,10,100,,,0,,0,,ENERGY,0,0,0,0.1,4,0.1,40,40,,,,150,300,3,1,,,SYSTEM,"no_drop, no_dealer, no_sell, hide_in_codex",,Terra Light,,,,,,,,,,,,9
+tl_deco_siren_deck,tl_deco_siren_deck,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,hide_in_codex,,,,,,,,,,,,,,10
+tl_deco_fenrir_L,tl_deco_fenrir_L,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,hide_in_codex,,,,,,,,,,,,,,11
+tl_deco_fenrir_R,tl_deco_fenrir_R,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,hide_in_codex,,,,,,,,,,,,,,12
+tl_deco_garm_L,tl_deco_garm_L,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,hide_in_codex,,,,,,,,,,,,,,13
+tl_deco_garm_R,tl_deco_garm_R,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,hide_in_codex,,,,,,,,,,,,,,14

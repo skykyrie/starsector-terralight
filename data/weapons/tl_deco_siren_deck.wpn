@@ -1,0 +1,49 @@
+{
+  "id": "tl_deco_siren_deck",
+  "specClass": "beam",
+  "type": "DECORATIVE",
+  "size": "LARGE",
+  "showDamageWhenDecorative": false,
+  "renderBelowAllWeapons": true,
+  "turretSprite": "graphics/weapons/terralight/tl_siren_deck_00.png",
+  "hardpointSprite": "graphics/weapons/terralight/tl_siren_deck_00.png",
+  "turretOffsets": [
+    0,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    0,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "fringeColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "coreColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "glowColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "width": 1.0,
+  "textureType": "ROUGH",
+  "textureScrollSpeed": 1.0,
+  "pixelsPerTexel": 1.0,
+  "numFrames": 5,
+  "frameRate": 0,
+  "alwaysAnimate": false
+}

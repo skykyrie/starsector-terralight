@@ -1,0 +1,59 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 28,
+  "fluxVents": 30,
+  "goalVariant": true,
+  "hullId": "tl_regulus",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "fluxdistributor",
+    "fluxcoil",
+    "autorepair",
+    "reinforcedhull",
+    "pointdefenseai",
+    "stabilizedshieldemitter"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_regulus_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "tl_bubble",
+        "WS 002": "tl_bubble",
+        "WS 003": "tl_bubble",
+        "WS 004": "tl_bubble"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 005": "pdlaser",
+        "WS 006": "pdlaser",
+        "WS 007": "pdlaser",
+        "WS 008": "pdlaser",
+        "WS 009": "pdlaser",
+        "WS 010": "pdlaser",
+        "WS 011": "pdlaser",
+        "WS 012": "pdlaser",
+        "WS 013": "pdlaser",
+        "WS 014": "pdlaser"
+      }
+    }
+  ],
+  "wings": []
+}

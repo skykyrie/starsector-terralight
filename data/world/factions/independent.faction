@@ -1,0 +1,22 @@
+{
+  "knownShips": {
+    "hulls": [
+      "tl_tiamat",
+      "tl_asura",
+      "tl_neow",
+      "tl_artemis",
+      "tl_siren",
+      "tl_hannibal",
+      "tl_regulus",
+      "tl_duilius",
+      "tl_abaddon",
+      "tl_iris",
+      "tl_selene",
+      "tl_fenrir",
+      "tl_garm"
+    ]
+  },
+  "priorityShips": {
+    "hulls": []
+  }
+}

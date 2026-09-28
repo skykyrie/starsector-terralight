@@ -1,0 +1,19 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_hellhound",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_hellhound_Hull",
+  "weaponGroups": [],
+  "wings": [],
+  "modules": [
+    {
+      "MODULE_TOWER": "tl_hellhound_tower_Hull"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 30,
+  "fluxVents": 30,
+  "goalVariant": true,
+  "hullId": "tl_hastur",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "fluxdistributor",
+    "fluxcoil",
+    "autorepair",
+    "reinforcedhull",
+    "pointdefenseai",
+    "stabilizedshieldemitter",
+    "eccm"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_hastur_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "tl_hastur_beam",
+        "WS 002": "tl_hastur_beam",
+        "WS 003": "tl_hastur_beam",
+        "WS 004": "tl_hastur_beam"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "UH 001": "heavymauler",
+        "UH 002": "heavymauler",
+        "UH 003": "heavymauler"
+      }
+    }
+  ],
+  "wings": [
+    "talon_wing",
+    "talon_wing"
+  ],
+  "modules": [
+    {
+      "MODULE_COMMAND": "tl_hastur_bridge_standard"
+    }
+  ]
+}

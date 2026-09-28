@@ -1,0 +1,62 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 43,
+  "fluxVents": 50,
+  "goalVariant": true,
+  "hullId": "tl_asura",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "missleracks",
+    "fluxdistributor",
+    "fluxcoil",
+    "autorepair",
+    "reinforcedhull",
+    "pointdefenseai",
+    "stabilizedshieldemitter"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_asura_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "tl_quadrail",
+        "UH 001": "tl_quadrail_twin"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 003": "annihilator",
+        "WS 004": "annihilator",
+        "WS 005": "annihilator",
+        "WS 006": "annihilator",
+        "WS 007": "annihilator",
+        "WS 008": "annihilator"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 009": "harpoon",
+        "WS 010": "harpoon"
+      }
+    }
+  ],
+  "wings": []
+}

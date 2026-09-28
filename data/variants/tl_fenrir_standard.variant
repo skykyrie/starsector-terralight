@@ -1,0 +1,52 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 0,
+  "fluxVents": 15,
+  "goalVariant": true,
+  "hullId": "tl_fenrir",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "fluxdistributor"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_fenrir_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "heavyneedler",
+        "WS 002": "heavyneedler",
+        "WS 003": "heavyneedler"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 004": "heavymauler"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 005": "vulcan",
+        "WS 006": "vulcan"
+      }
+    }
+  ],
+  "wings": []
+}

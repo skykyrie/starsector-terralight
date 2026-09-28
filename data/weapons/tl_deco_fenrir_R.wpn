@@ -1,0 +1,46 @@
+{
+  "id": "tl_deco_fenrir_R",
+  "specClass": "beam",
+  "type": "DECORATIVE",
+  "size": "MEDIUM",
+  "showDamageWhenDecorative": false,
+  "renderBelowAllWeapons": true,
+  "turretSprite": "graphics/weapons/terralight/tl_fenrir_booster_R.png",
+  "hardpointSprite": "graphics/weapons/terralight/tl_fenrir_booster_R.png",
+  "turretOffsets": [
+    0,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    0,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "fringeColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "coreColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "glowColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "width": 1.0,
+  "textureType": "ROUGH",
+  "textureScrollSpeed": 1.0,
+  "pixelsPerTexel": 1.0
+}

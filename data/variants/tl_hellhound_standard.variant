@@ -1,0 +1,54 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 0,
+  "fluxVents": 10,
+  "goalVariant": true,
+  "hullId": "tl_hellhound",
+  "hullMods": [
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "armoredweapons",
+    "blast_doors",
+    "targetingunit",
+    "missleracks",
+    "fluxdistributor",
+    "fluxcoil",
+    "autorepair",
+    "reinforcedhull"
+  ],
+  "permaMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "sMods": [
+    "hardenedshieldemitter",
+    "heavyarmor"
+  ],
+  "quality": 0,
+  "variantId": "tl_hellhound_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "railgun",
+        "WS 002": "railgun",
+        "WS 003": "railgun"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 004": "harpoon",
+        "WS 005": "harpoon"
+      }
+    }
+  ],
+  "wings": [],
+  "modules": [
+    {
+      "MODULE_TOWER": "tl_hellhound_tower_standard"
+    }
+  ]
+}

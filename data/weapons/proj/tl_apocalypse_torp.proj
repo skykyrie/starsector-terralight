@@ -1,0 +1,100 @@
+{
+  "id": "tl_apocalypse_torp",
+  "specClass": "missile",
+  "missileType": "MISSILE",
+  "sprite": "graphics/missiles/terralight/tl_apocalypse.png",
+  "size": [
+    112,
+    513
+  ],
+  "center": [
+    56.0,
+    256.5
+  ],
+  "collisionRadius": 60,
+  "collisionClass": "MISSILE_NO_FF",
+  "explosionColor": [
+    120,
+    255,
+    150,
+    255
+  ],
+  "explosionRadius": 600,
+  "flameoutTime": 1,
+  "armingTime": 0.1,
+  "noEngineGlowTime": 0.1,
+  "fadeTime": 0.5,
+  "engineSpec": {
+    "turnAcc": 120,
+    "turnRate": 40,
+    "acc": 220,
+    "dec": 110.0,
+    "maxSpeed": 520
+  },
+  "engineSlots": [
+    {
+      "id": "ES1",
+      "loc": [
+        -246.5,
+        0
+      ],
+      "style": "CUSTOM",
+      "styleSpec": {
+        "mode": "QUAD_STRIP",
+        "engineColor": [
+          120,
+          255,
+          150,
+          255
+        ],
+        "contrailDuration": 1,
+        "contrailWidthMult": 1,
+        "contrailWidthAddedFractionAtEnd": 2,
+        "contrailMinSeg": 5,
+        "contrailMaxSpeedMult": 0.5,
+        "contrailAngularVelocityMult": 0.5,
+        "contrailColor": [
+          120,
+          255,
+          150,
+          60
+        ],
+        "type": "GLOW"
+      },
+      "width": 90,
+      "length": 320,
+      "angle": 180.0
+    }
+  ],
+  "explosionSpec": {
+    "duration": 0.1,
+    "radius": 260,
+    "coreRadius": 130,
+    "collisionClass": "HITS_SHIPS_AND_ASTEROIDS",
+    "collisionClassByFighter": "HITS_SHIPS_AND_ASTEROIDS",
+    "particleSizeMin": 5.0,
+    "particleSizeRange": 3.0,
+    "particleDuration": 1,
+    "particleCount": 150,
+    "particleColor": [
+      120,
+      255,
+      150,
+      255
+    ],
+    "explosionColor": [
+      120,
+      255,
+      150,
+      255
+    ],
+    "detailedExplosionFlashColorFringe": [
+      120,
+      255,
+      150,
+      255
+    ],
+    "detailedExplosionFlashRadius": 650.0,
+    "useDetailedExplosion": true
+  }
+}

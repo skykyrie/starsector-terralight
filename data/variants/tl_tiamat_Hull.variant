@@ -1,0 +1,25 @@
+{
+  "displayName": "Hull",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": false,
+  "hullId": "tl_tiamat",
+  "hullMods": [],
+  "permaMods": [],
+  "sMods": [],
+  "quality": 0,
+  "variantId": "tl_tiamat_Hull",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "tl_triplebeam",
+        "WS 002": "tl_triplebeam",
+        "WS 003": "tl_triplebeam",
+        "WS 004": "tl_triplebeam"
+      }
+    }
+  ],
+  "wings": []
+}

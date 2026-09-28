@@ -1,0 +1,68 @@
+{
+  "id": "tl_bubble_warhead",
+  "specClass": "missile",
+  "missileType": "MISSILE",
+  "sprite": "graphics/missiles/terralight/tl_bubble.png",
+  "size": [
+    12,
+    16
+  ],
+  "center": [
+    6,
+    8
+  ],
+  "collisionRadius": 8,
+  "collisionClass": "MISSILE_NO_FF",
+  "explosionColor": [
+    255,
+    90,
+    110,
+    255
+  ],
+  "explosionRadius": 130,
+  "flameoutTime": 1,
+  "armingTime": 0.3,
+  "noEngineGlowTime": 0.1,
+  "fadeTime": 0.5,
+  "engineSpec": {
+    "turnAcc": 270,
+    "turnRate": 90,
+    "acc": 900,
+    "dec": 450.0
+  },
+  "engineSlots": [
+    {
+      "id": "ES1",
+      "loc": [
+        -8,
+        0
+      ],
+      "style": "CUSTOM",
+      "styleSpec": {
+        "mode": "QUAD_STRIP",
+        "engineColor": [
+          255,
+          90,
+          110,
+          255
+        ],
+        "contrailDuration": 1,
+        "contrailWidthMult": 1,
+        "contrailWidthAddedFractionAtEnd": 2,
+        "contrailMinSeg": 5,
+        "contrailMaxSpeedMult": 0.5,
+        "contrailAngularVelocityMult": 0.5,
+        "contrailColor": [
+          255,
+          90,
+          110,
+          60
+        ],
+        "type": "GLOW"
+      },
+      "width": 5,
+      "length": 16,
+      "angle": 180.0
+    }
+  ]
+}
