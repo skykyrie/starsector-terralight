@@ -37,7 +37,7 @@ dev/                   the source pipeline
    New sprite versions: copy `vs_<ship>N.py` to `N+1`, never overwrite an approved version; update the SHIPS table in the build.
 3. Build and check:
    ```
-   cd dev && python3 build_v11.py && python3 validate_v6.py && tools/jcheck.sh
+   cd dev && python3 build_v11.py && python3 validate_v6.py && bash tools/jcheck.sh
    ```
    `validate_v6.py` must print `ERRORS 0`; `jcheck.sh` must print no `error:` lines.
 4. Bump `VERSION` in `build_v11.py` for anything players should download.
@@ -55,7 +55,7 @@ Python deps: `pip install numpy scipy opencv-python-headless pillow`. Java: any 
   Moving parts must be collision-checked across their full motion.
 - **Loose Java scripts are compiled by Janino in-game:** no lambdas, no diamond `<>`, don't declare generic types
   (use raw `List` + casts), keep every class self-contained (nested static classes are fine; don't reference
-  other loose script classes). Always run `tools/jcheck.sh`.
+  other loose script classes). Always run `bash tools/jcheck.sh`.
 - **Starsector resets weapon/missile sprite alpha every frame.** To hide a sprite, shrink it with `setSize(0,0)` and
   restore the size when drawing it yourself (see `TL_Hull` and `TL_SirenModes`).
 - **Under-hull weapons:** slot ids starting `UH` are normal refittable slots; `TL_Hull` hides them and redraws them on
