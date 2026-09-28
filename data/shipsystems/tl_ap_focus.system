@@ -1,0 +1,12 @@
+{
+	"id":"tl_ap_focus",
+	"type":"STAT_MOD",
+	"aiType":"WEAPON_BOOST",
+	"statsScript":"data.shipsystems.scripts.TL_APFocusStats",
+	"weaponGlowColor":[255,0,255,255],
+	"weaponTypes":[ENERGY],
+	"useSound":"system_high_energy_focus_activate",
+	"deactivateSound":"system_high_energy_focus_deactivate",
+	"outOfUsesSound":"gun_out_of_ammo",
+	"loopSound":"system_high_energy_focus_loop",	
+}

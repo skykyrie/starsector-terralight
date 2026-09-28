@@ -1,0 +1,235 @@
+{
+  "bounds": [
+    94.0,
+    -15.0,
+    81.0,
+    -43.0,
+    62.0,
+    -60.0,
+    37.0,
+    -69.0,
+    9.0,
+    -67.0,
+    -13.0,
+    -56.0,
+    -22.0,
+    -61.0,
+    -58.0,
+    -61.0,
+    -59.0,
+    -68.0,
+    -74.0,
+    -68.0,
+    -76.0,
+    -61.0,
+    -86.0,
+    -58.0,
+    -93.0,
+    -50.0,
+    -96.0,
+    -22.0,
+    -103.0,
+    -22.0,
+    -106.0,
+    -14.0,
+    -123.0,
+    -26.0,
+    -123.0,
+    27.0,
+    -106.0,
+    15.0,
+    -103.0,
+    23.0,
+    -96.0,
+    23.0,
+    -93.0,
+    51.0,
+    -86.0,
+    59.0,
+    -76.0,
+    62.0,
+    -74.0,
+    69.0,
+    -59.0,
+    69.0,
+    -58.0,
+    62.0,
+    -22.0,
+    62.0,
+    -13.0,
+    57.0,
+    18.0,
+    70.0,
+    46.0,
+    68.0,
+    68.0,
+    57.0,
+    81.0,
+    44.0,
+    94.0,
+    16.0
+  ],
+  "center": [
+    100.0,
+    125.0
+  ],
+  "collisionRadius": 172,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 136.6,
+      "length": 260,
+      "location": [
+        -121.0,
+        0.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 62.1
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 45.5,
+      "length": 86.9,
+      "location": [
+        -85.0,
+        82.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 20.7
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 45.5,
+      "length": 86.9,
+      "location": [
+        -85.0,
+        -82.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 20.7
+    }
+  ],
+  "height": 250,
+  "width": 200,
+  "hullId": "tl_garm",
+  "hullName": "Garm",
+  "hullSize": "DESTROYER",
+  "shieldCenter": [
+    -14.0,
+    0.5
+  ],
+  "shieldRadius": 170,
+  "spriteName": "graphics/ships/terralight/tl_garm.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "UH 001",
+      "angle": 0.0,
+      "arc": 10.0,
+      "locations": [
+        73.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 002",
+      "angle": 0.0,
+      "arc": 120.0,
+      "locations": [
+        75.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 003",
+      "angle": 0.0,
+      "arc": 120.0,
+      "locations": [
+        45.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 004",
+      "angle": 0.0,
+      "arc": 120.0,
+      "locations": [
+        15.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 005",
+      "angle": 180.0,
+      "arc": 180.0,
+      "locations": [
+        -78.0,
+        40.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 006",
+      "angle": 180.0,
+      "arc": 180.0,
+      "locations": [
+        -78.0,
+        -40.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "SW_L",
+      "angle": 0.0,
+      "arc": 60.0,
+      "locations": [
+        -67.0,
+        67.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "DECORATIVE"
+    },
+    {
+      "id": "SW_R",
+      "angle": 0.0,
+      "arc": 60.0,
+      "locations": [
+        -67.0,
+        -67.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "DECORATIVE"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {
+    "SW_L": "tl_deco_garm_L",
+    "SW_R": "tl_deco_garm_R"
+  },
+  "builtInWings": []
+}

@@ -1,0 +1,275 @@
+{
+  "bounds": [
+    206.0,
+    -20.0,
+    201.0,
+    -41.0,
+    190.0,
+    -60.0,
+    171.0,
+    -75.0,
+    147.0,
+    -78.0,
+    137.0,
+    -91.0,
+    120.0,
+    -99.0,
+    99.0,
+    -97.0,
+    88.0,
+    -90.0,
+    80.0,
+    -78.0,
+    60.0,
+    -69.0,
+    45.0,
+    -69.0,
+    39.0,
+    -72.0,
+    24.0,
+    -93.0,
+    10.0,
+    -99.0,
+    -5.0,
+    -99.0,
+    -21.0,
+    -91.0,
+    -33.0,
+    -76.0,
+    -98.0,
+    -65.0,
+    -113.0,
+    -59.0,
+    -129.0,
+    -44.0,
+    -137.0,
+    -21.0,
+    -137.0,
+    22.0,
+    -129.0,
+    45.0,
+    -119.0,
+    56.0,
+    -98.0,
+    66.0,
+    -33.0,
+    77.0,
+    -21.0,
+    92.0,
+    -5.0,
+    100.0,
+    18.0,
+    97.0,
+    29.0,
+    90.0,
+    40.0,
+    72.0,
+    60.0,
+    70.0,
+    80.0,
+    79.0,
+    89.0,
+    92.0,
+    99.0,
+    98.0,
+    120.0,
+    100.0,
+    137.0,
+    92.0,
+    147.0,
+    79.0,
+    171.0,
+    76.0,
+    186.0,
+    66.0,
+    201.0,
+    42.0,
+    206.0,
+    21.0
+  ],
+  "center": [
+    100.0,
+    220.0
+  ],
+  "collisionRadius": 291,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 65.8,
+      "length": 125.6,
+      "location": [
+        -213.0,
+        30.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_CYAN",
+      "width": 29.9
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 65.8,
+      "length": 125.6,
+      "location": [
+        -213.0,
+        -30.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_CYAN",
+      "width": 29.9
+    }
+  ],
+  "height": 440,
+  "width": 200,
+  "hullId": "tl_hastur",
+  "hullName": "Hastur",
+  "hullSize": "CRUISER",
+  "shieldCenter": [
+    -4.5,
+    0.5
+  ],
+  "shieldRadius": 289,
+  "spriteName": "graphics/ships/terralight/tl_hastur.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 70.0,
+      "arc": 160.0,
+      "locations": [
+        120.0,
+        84.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 002",
+      "angle": 110.0,
+      "arc": 160.0,
+      "locations": [
+        10.0,
+        84.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 003",
+      "angle": -70.0,
+      "arc": 160.0,
+      "locations": [
+        120.0,
+        -84.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 004",
+      "angle": -110.0,
+      "arc": 160.0,
+      "locations": [
+        10.0,
+        -84.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "ENERGY"
+    },
+    {
+      "id": "UH 001",
+      "angle": 0.0,
+      "arc": 90.0,
+      "locations": [
+        150.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "UH 002",
+      "angle": 0.0,
+      "arc": 90.0,
+      "locations": [
+        100.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "UH 003",
+      "angle": 0.0,
+      "arc": 90.0,
+      "locations": [
+        50.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "MODULE_COMMAND",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -122.0,
+        0.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "STATION_MODULE"
+    },
+    {
+      "id": "WS 009",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -50.0,
+        12.0,
+        -40.0,
+        12.0,
+        -60.0,
+        12.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 010",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -50.0,
+        -12.0,
+        -40.0,
+        -12.0,
+        -60.0,
+        -12.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {
+    "WS 001": "tl_hastur_beam",
+    "WS 002": "tl_hastur_beam",
+    "WS 003": "tl_hastur_beam",
+    "WS 004": "tl_hastur_beam"
+  },
+  "builtInWings": []
+}

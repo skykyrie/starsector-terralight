@@ -1,0 +1,253 @@
+{
+  "bounds": [
+    93.0,
+    -16.0,
+    63.0,
+    -21.0,
+    43.0,
+    -40.0,
+    47.0,
+    -44.0,
+    36.0,
+    -52.0,
+    41.0,
+    -66.0,
+    35.0,
+    -71.0,
+    35.0,
+    -76.0,
+    20.0,
+    -71.0,
+    18.0,
+    -58.0,
+    21.0,
+    -52.0,
+    -15.0,
+    -58.0,
+    -36.0,
+    -52.0,
+    -56.0,
+    -38.0,
+    -60.0,
+    -51.0,
+    -72.0,
+    -51.0,
+    -80.0,
+    -20.0,
+    -86.0,
+    -24.0,
+    -100.0,
+    -20.0,
+    -105.0,
+    -25.0,
+    -105.0,
+    26.0,
+    -100.0,
+    21.0,
+    -83.0,
+    25.0,
+    -80.0,
+    21.0,
+    -72.0,
+    52.0,
+    -60.0,
+    52.0,
+    -56.0,
+    39.0,
+    -36.0,
+    53.0,
+    -15.0,
+    59.0,
+    21.0,
+    53.0,
+    18.0,
+    68.0,
+    29.0,
+    77.0,
+    37.0,
+    76.0,
+    35.0,
+    72.0,
+    41.0,
+    67.0,
+    40.0,
+    59.0,
+    35.0,
+    56.0,
+    42.0,
+    46.0,
+    47.0,
+    45.0,
+    43.0,
+    41.0,
+    63.0,
+    22.0,
+    93.0,
+    17.0,
+    100.0,
+    2.0
+  ],
+  "center": [
+    95.0,
+    118.0
+  ],
+  "collisionRadius": 193,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 136.6,
+      "length": 260,
+      "location": [
+        -103.0,
+        0.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 62.1
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 58.2,
+      "length": 111.1,
+      "location": [
+        -101.0,
+        76.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 26.4
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 58.2,
+      "length": 111.1,
+      "location": [
+        -101.0,
+        -76.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 26.4
+    }
+  ],
+  "height": 236,
+  "width": 190,
+  "hullId": "tl_fenrir",
+  "hullName": "Fenrir",
+  "hullSize": "DESTROYER",
+  "shieldCenter": [
+    -2.5,
+    0.5
+  ],
+  "shieldRadius": 191,
+  "spriteName": "graphics/ships/terralight/tl_fenrir.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 0.0,
+      "arc": 45.0,
+      "locations": [
+        90.0,
+        0.0
+      ],
+      "mount": "HARDPOINT",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 002",
+      "angle": 0.0,
+      "arc": 60.0,
+      "locations": [
+        34.0,
+        63.6
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 003",
+      "angle": 0.0,
+      "arc": 60.0,
+      "locations": [
+        34.0,
+        -63.6
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 004",
+      "angle": 0.0,
+      "arc": 360.0,
+      "locations": [
+        0.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 005",
+      "angle": 108.0,
+      "arc": 180.0,
+      "locations": [
+        -44.0,
+        30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 006",
+      "angle": -108.0,
+      "arc": 180.0,
+      "locations": [
+        -44.0,
+        -30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "SW_L",
+      "angle": 0.0,
+      "arc": 60.0,
+      "locations": [
+        -66.0,
+        57.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "DECORATIVE"
+    },
+    {
+      "id": "SW_R",
+      "angle": 0.0,
+      "arc": 60.0,
+      "locations": [
+        -66.0,
+        -57.0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "DECORATIVE"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {
+    "SW_L": "tl_deco_fenrir_L",
+    "SW_R": "tl_deco_fenrir_R"
+  },
+  "builtInWings": []
+}

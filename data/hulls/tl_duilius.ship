@@ -1,0 +1,310 @@
+{
+  "bounds": [
+    168.0,
+    -16.0,
+    160.0,
+    -31.0,
+    140.0,
+    -47.0,
+    113.0,
+    -51.0,
+    112.0,
+    -62.0,
+    -109.0,
+    -62.0,
+    -109.0,
+    -44.0,
+    -119.0,
+    -54.0,
+    -126.0,
+    -43.0,
+    -178.0,
+    -43.0,
+    -182.0,
+    -30.0,
+    -205.0,
+    -35.0,
+    -205.0,
+    36.0,
+    -182.0,
+    31.0,
+    -178.0,
+    44.0,
+    -126.0,
+    44.0,
+    -119.0,
+    55.0,
+    -109.0,
+    45.0,
+    -109.0,
+    63.0,
+    112.0,
+    63.0,
+    113.0,
+    52.0,
+    135.0,
+    50.0,
+    150.0,
+    42.0,
+    164.0,
+    26.0,
+    170.0,
+    8.0
+  ],
+  "center": [
+    95.0,
+    218.0
+  ],
+  "collisionRadius": 263,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 158.4,
+      "length": 260,
+      "location": [
+        -203.0,
+        0.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_YELLOW",
+      "width": 72.0
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -124.5,
+        52.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_YELLOW",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -124.5,
+        -52.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_YELLOW",
+      "width": 13.0
+    }
+  ],
+  "height": 436,
+  "width": 190,
+  "hullId": "tl_duilius",
+  "hullName": "Duilius",
+  "hullSize": "CRUISER",
+  "shieldCenter": [
+    -17.5,
+    0.5
+  ],
+  "shieldRadius": 261,
+  "spriteName": "graphics/ships/terralight/tl_duilius.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        122.0,
+        30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 002",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        42.0,
+        30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 003",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        -38.0,
+        30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 004",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        122.0,
+        -30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 005",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        42.0,
+        -30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 006",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        -38.0,
+        -30.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "UH 001",
+      "angle": 0.0,
+      "arc": 20.0,
+      "locations": [
+        158.0,
+        30.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "UH 002",
+      "angle": 0.0,
+      "arc": 20.0,
+      "locations": [
+        158.0,
+        -30.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 009",
+      "angle": 90.0,
+      "arc": 30.0,
+      "locations": [
+        82.0,
+        62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 010",
+      "angle": 90.0,
+      "arc": 30.0,
+      "locations": [
+        27.0,
+        62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 011",
+      "angle": 90.0,
+      "arc": 30.0,
+      "locations": [
+        -28.0,
+        62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 012",
+      "angle": 90.0,
+      "arc": 30.0,
+      "locations": [
+        -83.0,
+        62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 013",
+      "angle": -90.0,
+      "arc": 30.0,
+      "locations": [
+        82.0,
+        -62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 014",
+      "angle": -90.0,
+      "arc": 30.0,
+      "locations": [
+        27.0,
+        -62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 015",
+      "angle": -90.0,
+      "arc": 30.0,
+      "locations": [
+        -28.0,
+        -62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "WS 016",
+      "angle": -90.0,
+      "arc": 30.0,
+      "locations": [
+        -83.0,
+        -62.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {},
+  "builtInWings": []
+}

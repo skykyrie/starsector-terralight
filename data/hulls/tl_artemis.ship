@@ -1,0 +1,542 @@
+{
+  "bounds": [
+    212.0,
+    84.0,
+    211.0,
+    46.0,
+    205.0,
+    33.0,
+    191.0,
+    23.0,
+    167.0,
+    19.0,
+    -55.0,
+    18.0,
+    201.0,
+    14.0,
+    205.0,
+    9.0,
+    205.0,
+    -8.0,
+    201.0,
+    -13.0,
+    192.0,
+    -15.0,
+    -55.0,
+    -16.0,
+    167.0,
+    -18.0,
+    191.0,
+    -22.0,
+    199.0,
+    -26.0,
+    209.0,
+    -39.0,
+    212.0,
+    -83.0,
+    205.0,
+    -101.0,
+    191.0,
+    -111.0,
+    146.0,
+    -115.0,
+    140.0,
+    -120.0,
+    131.0,
+    -120.0,
+    124.0,
+    -115.0,
+    62.0,
+    -114.0,
+    55.0,
+    -120.0,
+    46.0,
+    -120.0,
+    39.0,
+    -114.0,
+    -23.0,
+    -114.0,
+    -30.0,
+    -120.0,
+    -39.0,
+    -120.0,
+    -46.0,
+    -114.0,
+    -108.0,
+    -114.0,
+    -115.0,
+    -120.0,
+    -124.0,
+    -120.0,
+    -131.0,
+    -115.0,
+    -158.0,
+    -114.0,
+    -169.0,
+    -127.0,
+    -179.0,
+    -118.0,
+    -184.0,
+    -125.0,
+    -192.0,
+    -120.0,
+    -194.0,
+    -115.0,
+    -185.0,
+    -108.0,
+    -188.0,
+    -102.0,
+    -207.0,
+    -103.0,
+    -207.0,
+    -78.0,
+    -189.0,
+    -78.0,
+    -189.0,
+    -55.0,
+    -207.0,
+    -55.0,
+    -208.0,
+    -33.0,
+    -205.0,
+    -28.0,
+    -194.0,
+    -30.0,
+    -192.0,
+    -25.0,
+    -199.0,
+    -22.0,
+    -204.0,
+    -3.0,
+    -217.0,
+    -3.0,
+    -219.0,
+    1.0,
+    -217.0,
+    4.0,
+    -204.0,
+    4.0,
+    -199.0,
+    23.0,
+    -192.0,
+    26.0,
+    -194.0,
+    31.0,
+    -207.0,
+    31.0,
+    -208.0,
+    52.0,
+    -205.0,
+    58.0,
+    -189.0,
+    56.0,
+    -189.0,
+    79.0,
+    -207.0,
+    79.0,
+    -208.0,
+    100.0,
+    -205.0,
+    106.0,
+    -187.0,
+    104.0,
+    -185.0,
+    109.0,
+    -194.0,
+    118.0,
+    -186.0,
+    126.0,
+    -179.0,
+    119.0,
+    -168.0,
+    128.0,
+    -158.0,
+    115.0,
+    -131.0,
+    116.0,
+    -124.0,
+    121.0,
+    -115.0,
+    121.0,
+    -108.0,
+    115.0,
+    -46.0,
+    115.0,
+    -39.0,
+    121.0,
+    -30.0,
+    121.0,
+    -23.0,
+    115.0,
+    39.0,
+    115.0,
+    46.0,
+    121.0,
+    55.0,
+    121.0,
+    62.0,
+    115.0,
+    124.0,
+    116.0,
+    131.0,
+    121.0,
+    140.0,
+    121.0,
+    146.0,
+    116.0,
+    191.0,
+    112.0,
+    199.0,
+    108.0,
+    209.0,
+    95.0
+  ],
+  "center": [
+    135.0,
+    235.0
+  ],
+  "collisionRadius": 314,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 70.8,
+      "length": 135.2,
+      "location": [
+        -206.0,
+        91.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 32.2
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 70.8,
+      "length": 135.2,
+      "location": [
+        -206.0,
+        43.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 32.2
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 70.8,
+      "length": 135.2,
+      "location": [
+        -206.0,
+        -43.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 32.2
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 70.8,
+      "length": 135.2,
+      "location": [
+        -206.0,
+        -91.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 32.2
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -174.1,
+        123.1
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 13.0
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -190.1,
+        121.4
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -174.1,
+        -122.8
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -190.1,
+        -120.8
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_PINK",
+      "width": 13.0
+    }
+  ],
+  "height": 470,
+  "width": 270,
+  "hullId": "tl_artemis",
+  "hullName": "Artemis",
+  "hullSize": "CAPITAL_SHIP",
+  "shieldCenter": [
+    -3.5,
+    0.5
+  ],
+  "shieldRadius": 312,
+  "spriteName": "graphics/ships/terralight/tl_artemis.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        135.0,
+        108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 002",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        50.0,
+        108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 003",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        -35.0,
+        108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 004",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        -120.0,
+        108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 005",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        135.0,
+        -108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 006",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        50.0,
+        -108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 007",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        -35.0,
+        -108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 008",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        -120.0,
+        -108.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 009",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -121.0,
+        67.0,
+        -111.0,
+        67.0,
+        -131.0,
+        67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 010",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -55.0,
+        67.0,
+        -45.0,
+        67.0,
+        -65.0,
+        67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 011",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        11.0,
+        67.0,
+        21.0,
+        67.0,
+        1.0,
+        67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 012",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        77.0,
+        67.0,
+        87.0,
+        67.0,
+        67.0,
+        67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 013",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -121.0,
+        -67.0,
+        -111.0,
+        -67.0,
+        -131.0,
+        -67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 014",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        -55.0,
+        -67.0,
+        -45.0,
+        -67.0,
+        -65.0,
+        -67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 015",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        11.0,
+        -67.0,
+        21.0,
+        -67.0,
+        1.0,
+        -67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 016",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        77.0,
+        -67.0,
+        87.0,
+        -67.0,
+        67.0,
+        -67.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {},
+  "builtInWings": []
+}

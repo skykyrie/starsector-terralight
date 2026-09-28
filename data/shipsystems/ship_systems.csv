@@ -1,0 +1,13 @@
+name,id,flux/second,f/s (base rate),f/s (base cap),flux/use,f/u (base rate),f/u (base cap),cr/u,max uses,regen,charge up,active,down,cooldown,toggle,noDissipation,noHardDissipation,hardFlux,noFiring,noTurning,noStrafing,noAccel,noShield,noVent,isPhaseCloak,tags,icon
+Triple Overcharge,tl_triple_overcharge,,,,,,,,,,0.5,8,1,18,,,,,,,,,,,,offensive,graphics/icons/hullsys/high_energy_focus.png
+Rail Overdrive,tl_rail_overdrive,,,,,,,,,,0.5,8,1,18,,,,,,,,,,,,offensive,graphics/icons/hullsys/ammo_feeder.png
+AP Focus,tl_ap_focus,,,,,,,,,,0.5,7,1,15,,,,,,,,,,,,offensive,graphics/icons/hullsys/high_energy_focus.png
+Screen Overdrive,tl_pd_overdrive,,,,,,,,,,0.3,8,1,16,,,,,,,,,,,,defensive,graphics/icons/hullsys/missile_racks.png
+Wing Rally,tl_wing_rally,,,,,,,,,,0.5,8,1,20,,,,,,,,,,,,offensive,graphics/icons/hullsys/targeting_feed.png
+Hit and Run,tl_hit_and_run,,,,,,,,,,0.2,4,0.6,10,,,,,,,,,,,,movement,graphics/icons/hullsys/maneuvering_jets.png
+Execution Salvo,tl_execution,,,,,,,,,,0.3,5,0.5,14,,,,,,,,,,,,offensive,graphics/icons/hullsys/ammo_feeder.png
+Claw Strike,tl_claw_strike,,,,,,,,2,0.05,0.3,0.3,0.5,3,,,,,,,,,,,,offensive,graphics/icons/hullsys/missile_racks.png
+Apocalypse,tl_apocalypse,,,,,,,,1,,1.0,0.4,2.5,1,,,,,,,,,,,,offensive,graphics/icons/hullsys/nova_burst.png
+Battleship Mode,tl_siren_mode,,,,,,,,,,3.5,,3.5,10,TRUE,,,,,,,,,,,special,graphics/icons/hullsys/fortress_shield.png
+Replica Wing,tl_replica_wing,,,,,,,,,,0.5,0.2,0.5,45,,,,,,,,,,,,offensive,graphics/icons/hullsys/reserve_deployment.png
+Flare Screen,tl_flare_screen,,,,,,,,3,0.05,,,,4,,,,,,,,,,,,defensive,graphics/icons/hullsys/flare_launcher.png

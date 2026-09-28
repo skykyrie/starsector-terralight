@@ -1,0 +1,11 @@
+{
+	"id":"tl_replica_wing",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.TL_ReplicaWingAI",
+	"statsScript":"data.shipsystems.scripts.TL_ReplicaWingStats",
+	"useSound":"system_reserve_wing",
+	"outOfUsesSound":"gun_out_of_ammo",
+	"aiHints":{
+	}
+}

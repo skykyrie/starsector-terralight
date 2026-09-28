@@ -1,0 +1,7 @@
+{
+ "id": "tl_flare_screen",
+ "type": "WEAPON",
+ "aiType": "FLARE",
+ "weaponDataId": "tl_neow_flare",
+ "outOfUsesSound": "gun_out_of_ammo"
+}

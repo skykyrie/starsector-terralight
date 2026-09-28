@@ -1,0 +1,9 @@
+{
+  "id": "tl_apocalypse",
+  "type": "STAT_MOD",
+  "aiType": "CUSTOM",
+  "aiScript": "data.shipsystems.scripts.ai.TL_ApocalypseAI",
+  "statsScript": "data.shipsystems.scripts.TL_ApocalypseStats",
+  "useSound": "system_forgevats",
+  "outOfUsesSound": "gun_out_of_ammo"
+}

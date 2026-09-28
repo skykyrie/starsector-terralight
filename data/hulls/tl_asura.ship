@@ -1,0 +1,339 @@
+{
+  "bounds": [
+    199.0,
+    -7.0,
+    134.0,
+    -52.0,
+    58.0,
+    -100.0,
+    5.0,
+    -97.0,
+    -7.0,
+    -100.0,
+    -20.0,
+    -95.0,
+    -62.0,
+    -100.0,
+    -128.0,
+    -100.0,
+    -164.0,
+    -96.0,
+    -184.0,
+    -89.0,
+    -191.0,
+    -96.0,
+    -198.0,
+    -89.0,
+    -192.0,
+    -82.0,
+    -194.0,
+    -80.0,
+    -198.0,
+    -84.0,
+    -205.0,
+    -77.0,
+    -197.0,
+    -70.0,
+    -199.0,
+    -58.0,
+    -214.0,
+    -60.0,
+    -218.0,
+    -51.0,
+    -216.0,
+    -29.0,
+    -197.0,
+    -30.0,
+    -191.0,
+    -18.0,
+    -197.0,
+    -15.0,
+    -204.0,
+    -18.0,
+    -209.0,
+    -3.0,
+    -206.0,
+    17.0,
+    -192.0,
+    16.0,
+    -192.0,
+    24.0,
+    -197.0,
+    31.0,
+    -216.0,
+    30.0,
+    -218.0,
+    52.0,
+    -214.0,
+    61.0,
+    -199.0,
+    59.0,
+    -197.0,
+    71.0,
+    -205.0,
+    78.0,
+    -198.0,
+    85.0,
+    -194.0,
+    81.0,
+    -192.0,
+    83.0,
+    -198.0,
+    90.0,
+    -191.0,
+    97.0,
+    -184.0,
+    90.0,
+    -164.0,
+    97.0,
+    -128.0,
+    101.0,
+    -62.0,
+    101.0,
+    -19.0,
+    96.0,
+    -7.0,
+    101.0,
+    8.0,
+    98.0,
+    58.0,
+    101.0,
+    206.0,
+    2.0
+  ],
+  "center": [
+    145.0,
+    220.0
+  ],
+  "collisionRadius": 296,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 75.9,
+      "length": 144.9,
+      "location": [
+        -216.0,
+        44.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 34.5
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 75.9,
+      "length": 144.9,
+      "location": [
+        -207.0,
+        0.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 34.5
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 75.9,
+      "length": 144.9,
+      "location": [
+        -216.0,
+        -44.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 34.5
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -201.7,
+        81.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -194.7,
+        93.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -201.7,
+        -81.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -194.0,
+        -93.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    }
+  ],
+  "height": 440,
+  "width": 290,
+  "hullId": "tl_asura",
+  "hullName": "Asura-II",
+  "hullSize": "CAPITAL_SHIP",
+  "shieldCenter": [
+    -6.0,
+    0.5
+  ],
+  "shieldRadius": 294,
+  "spriteName": "graphics/ships/terralight/tl_asura.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 0.0,
+      "arc": 300.0,
+      "locations": [
+        120.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "UH 001",
+      "angle": 0.0,
+      "arc": 300.0,
+      "locations": [
+        120.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 003",
+      "angle": 90.0,
+      "arc": 180.0,
+      "locations": [
+        55.0,
+        83.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 004",
+      "angle": 90.0,
+      "arc": 180.0,
+      "locations": [
+        -5.0,
+        83.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 005",
+      "angle": 90.0,
+      "arc": 180.0,
+      "locations": [
+        -65.0,
+        83.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 006",
+      "angle": -90.0,
+      "arc": 180.0,
+      "locations": [
+        55.0,
+        -83.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 007",
+      "angle": -90.0,
+      "arc": 180.0,
+      "locations": [
+        -5.0,
+        -83.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 008",
+      "angle": -90.0,
+      "arc": 180.0,
+      "locations": [
+        -65.0,
+        -83.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 009",
+      "angle": 90.0,
+      "arc": 180.0,
+      "locations": [
+        -148.0,
+        37.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    },
+    {
+      "id": "WS 010",
+      "angle": -90.0,
+      "arc": 180.0,
+      "locations": [
+        -148.0,
+        -37.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "MISSILE"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {
+    "WS 001": "tl_quadrail",
+    "UH 001": "tl_quadrail_twin"
+  },
+  "builtInWings": []
+}

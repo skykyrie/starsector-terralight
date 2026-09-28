@@ -1,0 +1,22 @@
+{
+  "designTypeColors": {
+    "Terra Light": [
+      235,
+      110,
+      210,
+      255
+    ]
+  },
+  "graphics": {
+    "terralight": {
+      "abaddon_frame": "graphics/ships/terralight/tl_abaddon_frame.png",
+      "abaddon_boosterL": "graphics/ships/terralight/tl_abaddon_boosterL.png",
+      "abaddon_boosterR": "graphics/ships/terralight/tl_abaddon_boosterR.png",
+      "abaddon_shadow_rest": "graphics/ships/terralight/tl_abaddon_shadow_rest.png",
+      "abaddon_shadow_open": "graphics/ships/terralight/tl_abaddon_shadow_open.png",
+      "hellhound_drive": "graphics/ships/terralight/tl_hellhound_drive.png",
+      "hellhound_hull": "graphics/ships/terralight/tl_hellhound_combat.png",
+      "apocalypse_docked": "graphics/missiles/terralight/tl_apocalypse.png"
+    }
+  }
+}

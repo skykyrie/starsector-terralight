@@ -1,0 +1,11 @@
+{
+	"id":"tl_claw_strike",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.TL_ClawStrikeAI",
+	"statsScript":"data.shipsystems.scripts.TL_ClawStrikeStats",
+	"weaponGlowColor":[255,200,0,155],
+	"weaponTypes":[MISSILE],
+	"useSound":"system_ammo_feeder",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

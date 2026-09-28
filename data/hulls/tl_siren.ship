@@ -1,0 +1,438 @@
+{
+  "bounds": [
+    152.0,
+    128.0,
+    150.0,
+    121.0,
+    158.0,
+    99.0,
+    164.0,
+    39.0,
+    162.0,
+    -70.0,
+    148.0,
+    -136.0,
+    135.0,
+    -148.0,
+    122.0,
+    -152.0,
+    107.0,
+    -150.0,
+    102.0,
+    -140.0,
+    76.0,
+    -140.0,
+    66.0,
+    -151.0,
+    34.0,
+    -153.0,
+    26.0,
+    -151.0,
+    19.0,
+    -140.0,
+    -12.0,
+    -140.0,
+    -20.0,
+    -150.0,
+    -41.0,
+    -152.0,
+    -53.0,
+    -167.0,
+    -57.0,
+    -166.0,
+    -79.0,
+    -144.0,
+    -66.0,
+    -134.0,
+    -66.0,
+    -126.0,
+    -76.0,
+    -106.0,
+    -106.0,
+    -110.0,
+    -110.0,
+    -103.0,
+    -107.0,
+    -73.0,
+    -79.0,
+    -76.0,
+    -79.0,
+    -44.0,
+    -114.0,
+    -41.0,
+    -118.0,
+    -32.0,
+    -119.0,
+    24.0,
+    -116.0,
+    41.0,
+    -79.0,
+    45.0,
+    -79.0,
+    77.0,
+    -107.0,
+    74.0,
+    -111.0,
+    96.0,
+    -108.0,
+    109.0,
+    -76.0,
+    107.0,
+    -66.0,
+    127.0,
+    -66.0,
+    135.0,
+    -79.0,
+    145.0,
+    -55.0,
+    168.0,
+    -41.0,
+    153.0,
+    -22.0,
+    152.0,
+    -12.0,
+    141.0,
+    19.0,
+    141.0,
+    28.0,
+    153.0,
+    53.0,
+    154.0,
+    68.0,
+    151.0,
+    76.0,
+    141.0,
+    102.0,
+    141.0,
+    107.0,
+    151.0,
+    122.0,
+    153.0,
+    145.0,
+    141.0
+  ],
+  "center": [
+    170.0,
+    186.0
+  ],
+  "collisionRadius": 258,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 75.9,
+      "length": 144.9,
+      "location": [
+        -109.0,
+        92.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 34.5
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 75.9,
+      "length": 144.9,
+      "location": [
+        -109.0,
+        -92.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 34.5
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -60.0,
+        162.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -73.0,
+        151.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -60.0,
+        -162.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -73.0,
+        -151.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    }
+  ],
+  "height": 372,
+  "width": 340,
+  "hullId": "tl_siren",
+  "hullName": "Siren",
+  "hullSize": "CAPITAL_SHIP",
+  "shieldCenter": [
+    22.5,
+    0.5
+  ],
+  "shieldRadius": 256,
+  "spriteName": "graphics/ships/terralight/tl_siren.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        122.0,
+        104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 002",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        75.0,
+        104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 003",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        28.0,
+        104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 004",
+      "angle": 90.0,
+      "arc": 240.0,
+      "locations": [
+        -20.0,
+        104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 005",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        122.0,
+        -104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 006",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        75.0,
+        -104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 007",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        28.0,
+        -104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "WS 008",
+      "angle": -90.0,
+      "arc": 240.0,
+      "locations": [
+        -20.0,
+        -104.0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BALLISTIC"
+    },
+    {
+      "id": "MAIN 1",
+      "angle": 0.0,
+      "arc": 270.0,
+      "locations": [
+        82.0,
+        58.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "ENERGY"
+    },
+    {
+      "id": "MAIN 2",
+      "angle": 0.0,
+      "arc": 270.0,
+      "locations": [
+        82.0,
+        -58.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "ENERGY"
+    },
+    {
+      "id": "MAIN 3",
+      "angle": 0.0,
+      "arc": 300.0,
+      "locations": [
+        12.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "ENERGY"
+    },
+    {
+      "id": "WS 012",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        62.0,
+        14.0,
+        72.0,
+        14.0,
+        52.0,
+        14.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 013",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        40.0,
+        14.0,
+        50.0,
+        14.0,
+        30.0,
+        14.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 014",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        40.0,
+        -14.0,
+        50.0,
+        -14.0,
+        30.0,
+        -14.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "WS 015",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        62.0,
+        -14.0,
+        72.0,
+        -14.0,
+        52.0,
+        -14.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "LAUNCH_BAY"
+    },
+    {
+      "id": "DECK",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        11.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "DECORATIVE"
+    },
+    {
+      "id": "DECK2",
+      "angle": 0.0,
+      "arc": 0.0,
+      "locations": [
+        11.0,
+        0.0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "DECORATIVE"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull",
+    "tl_siren_modes"
+  ],
+  "builtInWeapons": {
+    "DECK": "tl_deco_siren_deck",
+    "DECK2": "tl_deco_siren_deck"
+  },
+  "builtInWings": []
+}

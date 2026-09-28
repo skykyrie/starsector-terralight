@@ -1,0 +1,288 @@
+{
+  "bounds": [
+    249.0,
+    -52.0,
+    234.0,
+    -75.0,
+    214.0,
+    -94.0,
+    189.0,
+    -107.0,
+    158.0,
+    -117.0,
+    79.0,
+    -127.0,
+    -6.0,
+    -128.0,
+    -71.0,
+    -124.0,
+    -117.0,
+    -117.0,
+    -157.0,
+    -104.0,
+    -191.0,
+    -131.0,
+    -215.0,
+    -129.0,
+    -225.0,
+    -139.0,
+    -233.0,
+    -128.0,
+    -223.0,
+    -120.0,
+    -226.0,
+    -117.0,
+    -218.0,
+    -71.0,
+    -203.0,
+    -74.0,
+    -226.0,
+    -45.0,
+    -239.0,
+    -44.0,
+    -245.0,
+    -32.0,
+    -264.0,
+    -35.0,
+    -268.0,
+    -26.0,
+    -264.0,
+    -2.0,
+    -244.0,
+    -4.0,
+    -245.0,
+    6.0,
+    -266.0,
+    5.0,
+    -266.0,
+    34.0,
+    -245.0,
+    33.0,
+    -239.0,
+    45.0,
+    -225.0,
+    47.0,
+    -203.0,
+    75.0,
+    -218.0,
+    72.0,
+    -226.0,
+    118.0,
+    -223.0,
+    121.0,
+    -233.0,
+    129.0,
+    -225.0,
+    140.0,
+    -215.0,
+    130.0,
+    -191.0,
+    132.0,
+    -157.0,
+    105.0,
+    -137.0,
+    113.0,
+    -88.0,
+    123.0,
+    -6.0,
+    129.0,
+    108.0,
+    126.0,
+    162.0,
+    117.0,
+    200.0,
+    103.0,
+    227.0,
+    84.0,
+    249.0,
+    53.0,
+    262.0,
+    4.0
+  ],
+  "center": [
+    148.0,
+    282.0
+  ],
+  "collisionRadius": 355,
+  "coversColor": "",
+  "engineSlots": [
+    {
+      "angle": 180.0,
+      "contrailSize": 110.0,
+      "length": 210.0,
+      "location": [
+        -266.0,
+        19.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 50
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 110.0,
+      "length": 210.0,
+      "location": [
+        -266.0,
+        -19.0
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 50
+    },
+    {
+      "angle": 135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -228.2,
+        134.2
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    },
+    {
+      "angle": -135.0,
+      "contrailSize": 22.0,
+      "length": 50.0,
+      "location": [
+        -228.2,
+        -134.2
+      ],
+      "style": "CUSTOM",
+      "styleId": "TL_ORANGE",
+      "width": 13.0
+    }
+  ],
+  "height": 564,
+  "width": 296,
+  "hullId": "tl_neow",
+  "hullName": "Neow",
+  "hullSize": "CAPITAL_SHIP",
+  "shieldCenter": [
+    -3.0,
+    0.5
+  ],
+  "shieldRadius": 353,
+  "spriteName": "graphics/ships/terralight/tl_neow.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "id": "WS 001",
+      "angle": 0.0,
+      "arc": 30.0,
+      "locations": [
+        132.9,
+        0.0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "MISSILE"
+    },
+    {
+      "id": "FL 1",
+      "angle": 0.0,
+      "arc": 40.0,
+      "locations": [
+        244.0,
+        0.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 2",
+      "angle": 45.0,
+      "arc": 40.0,
+      "locations": [
+        111.0,
+        111.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 3",
+      "angle": 90.0,
+      "arc": 40.0,
+      "locations": [
+        0.0,
+        111.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 4",
+      "angle": 135.0,
+      "arc": 40.0,
+      "locations": [
+        -104.7,
+        104.7
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 5",
+      "angle": 180.0,
+      "arc": 40.0,
+      "locations": [
+        -226.0,
+        0.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 6",
+      "angle": -135.0,
+      "arc": 40.0,
+      "locations": [
+        -104.7,
+        -104.7
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 7",
+      "angle": -90.0,
+      "arc": 40.0,
+      "locations": [
+        0.0,
+        -110.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    },
+    {
+      "id": "FL 8",
+      "angle": -45.0,
+      "arc": 40.0,
+      "locations": [
+        111.0,
+        -111.0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    }
+  ],
+  "builtInMods": [
+    "tl_hull"
+  ],
+  "builtInWeapons": {
+    "WS 001": "tl_armageddon"
+  },
+  "builtInWings": []
+}

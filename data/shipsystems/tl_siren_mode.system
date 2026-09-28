@@ -1,0 +1,9 @@
+{
+  "id": "tl_siren_mode",
+  "type": "STAT_MOD",
+  "aiType": "CUSTOM",
+  "aiScript": "data.shipsystems.scripts.ai.TL_SirenModeAI",
+  "statsScript": "data.shipsystems.scripts.TL_SirenModeStats",
+  "useSound": "system_forgevats",
+  "outOfUsesSound": "gun_out_of_ammo"
+}

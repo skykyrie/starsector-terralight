@@ -1,0 +1,258 @@
+{
+  "TL_VIOLET": {
+    "engineColor": [
+      225,
+      120,
+      255,
+      255
+    ],
+    "engineCampaignColor": [
+      225,
+      120,
+      255,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      225,
+      120,
+      255,
+      45
+    ],
+    "contrailCampaignColor": [
+      225,
+      120,
+      255,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_ORANGE": {
+    "engineColor": [
+      255,
+      150,
+      60,
+      255
+    ],
+    "engineCampaignColor": [
+      255,
+      150,
+      60,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      255,
+      150,
+      60,
+      45
+    ],
+    "contrailCampaignColor": [
+      255,
+      150,
+      60,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_PINK": {
+    "engineColor": [
+      255,
+      110,
+      190,
+      255
+    ],
+    "engineCampaignColor": [
+      255,
+      110,
+      190,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      255,
+      110,
+      190,
+      45
+    ],
+    "contrailCampaignColor": [
+      255,
+      110,
+      190,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_CYAN": {
+    "engineColor": [
+      90,
+      220,
+      240,
+      255
+    ],
+    "engineCampaignColor": [
+      90,
+      220,
+      240,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      90,
+      220,
+      240,
+      45
+    ],
+    "contrailCampaignColor": [
+      90,
+      220,
+      240,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_TEAL": {
+    "engineColor": [
+      60,
+      225,
+      190,
+      255
+    ],
+    "engineCampaignColor": [
+      60,
+      225,
+      190,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      60,
+      225,
+      190,
+      45
+    ],
+    "contrailCampaignColor": [
+      60,
+      225,
+      190,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_YELLOW": {
+    "engineColor": [
+      255,
+      210,
+      90,
+      255
+    ],
+    "engineCampaignColor": [
+      255,
+      210,
+      90,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      255,
+      210,
+      90,
+      45
+    ],
+    "contrailCampaignColor": [
+      255,
+      210,
+      90,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_GREEN": {
+    "engineColor": [
+      120,
+      255,
+      150,
+      255
+    ],
+    "engineCampaignColor": [
+      120,
+      255,
+      150,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      120,
+      255,
+      150,
+      45
+    ],
+    "contrailCampaignColor": [
+      120,
+      255,
+      150,
+      90
+    ],
+    "type": "GLOW"
+  },
+  "TL_BLUE": {
+    "engineColor": [
+      100,
+      170,
+      255,
+      255
+    ],
+    "engineCampaignColor": [
+      100,
+      170,
+      255,
+      200
+    ],
+    "contrailParticleSizeMult": 5,
+    "contrailParticleDuration": 1.4,
+    "contrailParticleFinalSizeMult": 2.5,
+    "contrailMaxSpeedMult": 0.5,
+    "contrailAngularVelocityMult": 0,
+    "contrailColor": [
+      100,
+      170,
+      255,
+      45
+    ],
+    "contrailCampaignColor": [
+      100,
+      170,
+      255,
+      90
+    ],
+    "type": "GLOW"
+  }
+}
